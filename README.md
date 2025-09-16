@@ -1,0 +1,651 @@
+
+#as of 9/16/2025 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Developer Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --accent: #17e388;
+            --accent-hover: #00cc6a;
+            --border: #404040;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #0f0f0f 50%, var(--bg-primary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent) 0%, #00cc6a 100%);
+            color: var(--bg-primary);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .terminal-window {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            max-width: 400px;
+            animation: slideInRight 1s ease-out 0.8s both;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27ca3f; }
+
+        .terminal-content {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 5rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #00cc6a);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--accent);
+        }
+
+        /* Dev Log Section */
+        .dev-log {
+            padding: 5rem 0;
+        }
+
+        .log-entries {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .log-entry {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .log-entry:hover {
+            transform: translateX(10px);
+        }
+
+        .log-date {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .log-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .log-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-primary);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: var(--bg-card);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .terminal-window {
+                max-width: 300px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">Your Name</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#devlog">Dev Log</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div style="display: flex; align-items: center; gap: 3rem;">
+                    <div class="hero-content">
+                        <h1>Just4Learning's devlog</h1>
+                        <p class="hero-subtitle">Building cool stuff with code and hardware</p>
+                        <p class="hero-description">
+                            I'm passionate about creating innovative solutions through software development, 
+                            hardware projects, and system administration. From retro gaming setups to 
+                            enterprise home labs, I love bringing ideas to life.
+                        </p>
+                        <a href="#projects" class="cta-button">View My Work</a>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="terminal-window">
+                            <div class="terminal-header">
+                                <div class="terminal-dot dot-red"></div>
+                                <div class="terminal-dot dot-yellow"></div>
+                                <div class="terminal-dot dot-green"></div>
+                            </div>
+                            <div class="terminal-content">
+                                <div>$ whoami</div>
+                                <div>developer</div>
+                                <div>$ ls projects/</div>
+                                <div>retro-pi/</div>
+                                <div>home-lab/</div>
+                                <div>web-apps/</div>
+                                <div>$ echo "Hello World!"</div>
+                                <div>Hello World!</div>
+                                <div class="cursor">_</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3 class="project-title">🕹️ Retro Pi Gaming System</h3>
+                        <p class="project-description">
+                            Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games 
+                            from multiple console generations. wireless controllers.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Raspberry Pi</span>
+                            <span class="tech-tag">RetroPie</span>
+                            <span class="tech-tag">Linux</span>
+                            <span class="tech-tag">3D Printing</span>
+                            <span class="tech-tag">Electronics</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Details →</a>
+                            <a href="#" class="project-link">GitHub →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">🏠 Home Lab Infrastructure</h3>
+                        <p class="project-description">
+                            Designed and implemented a complete home lab environment with virtualization, 
+                            container orchestration, monitoring, and network services. Features automated 
+                            deployments and comprehensive logging and debuging. 
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Proxmox</span>
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">Kubernetes</span>
+                            <span class="tech-tag">pfSense</span>
+                            <span class="tech-tag">Grafana</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Details →</a>
+                            <a href="#" class="project-link">Documentation →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">⚡ Automation System</h3>
+                        <p class="project-description">
+                            Created a smart home automation system using Ollama3 and and tinyllama to create an offline AI that 
+                            can be used without a network connections.
+
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">ESP32</span>
+                            <span class="tech-tag">Arduino</span>
+                            <span class="tech-tag">MQTT</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">React</span>
+                             <span class="tech-tag">RaspberryPi</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Details →</a>
+                            <a href="#" class="project-link">GitHub →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">📊 Network Monitoring Dashboard</h3>
+                        <p class="project-description">
+                            Developed a comprehensive network monitoring solution with real-time analytics, 
+                            alerting system, and beautiful visualizations. Tracks performance across 
+                            multiple locations and devices.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">InfluxDB</span>
+                            <span class="tech-tag">Grafana</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">View Details →</a>
+                            <a href="#" class="project-link">Live Demo →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="devlog" class="dev-log">
+            <div class="container">
+                <h2 class="section-title">Development Log</h2>
+                <div class="log-entries">
+                    <div class="log-entry">
+                        <div class="log-date">December 15, 2024</div>
+                        <h3 class="log-title">Home Lab Kubernetes Migration Complete</h3>
+                        <div class="log-content">
+                            Successfully migrated all services from Docker Compose to Kubernetes cluster. 
+                            The transition involved setting up persistent volumes, configuring ingress 
+                            controllers, and implementing proper monitoring. Performance has improved 
+                            significantly with better resource utilization.
+                        </div>
+                    </div>
+
+                    <div class="log-entry">
+                        <div class="log-date">November 28, 2024</div>
+                        <h3 class="log-title">Retro Pi Case Design Iteration 3</h3>
+                        <div class="log-content">
+                            Completed the three different iteration of the custom Retro Pi  design & setup. This version 
+                            features improved airflow with fans, better cable management, and an 
+                            integrated personal system for home imoprovement 
+
+                        </div>
+                    </div>
+
+                    <div class="log-entry">
+                        <div class="log-date">November 12, 2024</div>
+                        <h3 class="log-title">IoT Sensor Network Expansion</h3>
+                        <div class="log-content">
+                            Added 6 new ESP32 nodes to the home automation network, covering temperature, 
+                            humidity, and motion detection across all rooms. Implemented mesh networking 
+                            for better reliability and range. The MQTT broker is handling the increased 
+                            load well.
+                        </div>
+                    </div>
+
+                    <div class="log-entry">
+                        <div class="log-date">October 30, 2024</div>
+                        <h3 class="log-title">Network Monitoring Dashboard v2.0</h3>
+                        <div class="log-content">
+                            Released version 2.0 of the network monitoring dashboard with new features 
+                            including predictive analytics, automated incident response, and mobile 
+                            optimization. The machine learning models are now accurately predicting 
+                            network issues 30 minutes before they occur.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p style="color: var(--text-secondary);">© 2024 Just4Learning All rights reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/Just4Learnin" class="social-link" title="GitHub">GitHub</a>
+                    <a href="#" class="social-link" title="LinkedIn">LinkedIn</a>
+                    <a href="mailto:Lifesmediaservices@gmail.com" class="social-link" title="Email">Email</a>
+                    <a href="#" class="social-link" title="Twitter">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</body>
+</html>

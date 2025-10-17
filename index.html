@@ -36,35 +36,29 @@
             padding: 0 20px;
         }
 
-        /* Loading Spinner */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 200px;
-            color: var(--accent);
-        }
-
-        .spinner {
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Admin Toggle Button - HIDDEN */
+        /* Admin Button */
         .admin-toggle {
-            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 2000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(23, 227, 136, 0.3);
         }
 
-        /* Modal Styles */
+        .admin-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(23, 227, 136, 0.5);
+        }
+
+        /* Login Modal */
         .modal {
             display: none;
             position: fixed;
@@ -87,10 +81,8 @@
             padding: 2rem;
             border-radius: 15px;
             border: 1px solid var(--border);
-            max-width: 500px;
+            max-width: 400px;
             width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .modal-content h2 {
@@ -141,11 +133,6 @@
             transform: translateY(-2px);
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         .btn-secondary {
             background: var(--bg-secondary);
             color: var(--text-primary);
@@ -158,36 +145,6 @@
 
         .btn-danger:hover {
             background: #ff4444;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .tab {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
         }
 
         /* Edit Mode Styles */
@@ -203,7 +160,6 @@
             top: 1rem;
             right: 1rem;
             gap: 0.5rem;
-            z-index: 10;
         }
 
         .edit-mode .edit-controls {
@@ -270,7 +226,7 @@
 
         /* Image Upload */
         .image-preview {
-            max-width: 100%;
+            max-width: 200px;
             max-height: 200px;
             margin-top: 1rem;
             border-radius: 5px;
@@ -284,13 +240,7 @@
             margin-bottom: 1rem;
         }
 
-        .upload-progress {
-            margin-top: 1rem;
-            color: var(--accent);
-            font-size: 0.9rem;
-        }
-
-        /* Rest of your existing styles */
+        /* Header & Navigation */
         header {
             position: fixed;
             top: 0;
@@ -357,6 +307,7 @@
             width: 100%;
         }
 
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -464,6 +415,7 @@
             color: var(--accent);
         }
 
+        /* Projects Section */
         .projects {
             padding: 5rem 0;
             background: var(--bg-secondary);
@@ -560,6 +512,7 @@
             color: var(--accent);
         }
 
+        /* Dev Log Section */
         .dev-log {
             padding: 5rem 0;
         }
@@ -600,6 +553,7 @@
             line-height: 1.6;
         }
 
+        /* Footer */
         footer {
             background: var(--bg-primary);
             padding: 3rem 0;
@@ -634,6 +588,7 @@
             transform: translateY(-2px);
         }
 
+        /* Animations */
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -665,6 +620,7 @@
             51%, 100% { opacity: 0; }
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -685,87 +641,41 @@
                 text-align: center;
             }
         }
-
-        .error-message {
-            background: rgba(255, 95, 86, 0.1);
-            border: 1px solid #ff5f56;
-            color: #ff5f56;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-
-        .success-message {
-            background: rgba(23, 227, 136, 0.1);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
     </style>
 </head>
 <body>
     <!-- Admin Bar -->
     <div class="admin-bar" id="adminBar">
-        🔒 Admin Mode Active - <span id="userEmail"></span>
-        <button onclick="exitAdmin()">Sign Out</button>
+        🔒 Admin Mode Active
+        <button onclick="saveChanges()">Save All Changes</button>
+        <button onclick="exitAdmin()">Exit Admin</button>
     </div>
 
     <!-- Admin Toggle Button -->
     <button class="admin-toggle" onclick="toggleAdmin()">🔧</button>
 
-    <!-- Login/Register Modal -->
-    <div class="modal" id="authModal">
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h2>Admin Access</h2>
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('login')">Login</button>
-                <button class="tab" onclick="switchTab('register')">Create Account</button>
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter admin password">
             </div>
-            
-            <div id="loginTab" class="tab-content active">
-                <div id="loginError" style="display:none;" class="error-message"></div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter password">
-                </div>
-                <button class="btn" onclick="loginUser()" id="loginBtn">Login</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
-            
-            <div id="registerTab" class="tab-content">
-                <div id="registerError" style="display:none;" class="error-message"></div>
-                <div id="registerSuccess" style="display:none;" class="success-message"></div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="registerEmail" placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Password (min 6 characters)</label>
-                    <input type="password" id="registerPassword" placeholder="Create password">
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" id="registerPasswordConfirm" placeholder="Confirm password">
-                </div>
-                <button class="btn" onclick="registerUser()" id="registerBtn">Create Account</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
+            <button class="btn" onclick="login()">Login</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 0.9rem;">
+                Default password: admin123 (Change this!)
+            </p>
         </div>
     </div>
 
-    <!-- Edit Modal -->
+    <!-- Edit Modals -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <h2 id="editModalTitle">Edit Item</h2>
             <div id="editModalContent"></div>
-            <div id="uploadProgress" class="upload-progress" style="display:none;"></div>
-            <button class="btn" onclick="saveEdit()" id="saveEditBtn">Save</button>
+            <button class="btn" onclick="saveEdit()">Save</button>
             <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
         </div>
     </div>
@@ -823,9 +733,7 @@
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">Featured Projects</h2>
-                <div class="projects-grid" id="projectsGrid">
-                    <div class="loading"><div class="spinner"></div></div>
-                </div>
+                <div class="projects-grid" id="projectsGrid"></div>
                 <button class="btn add-new-btn" onclick="addNewProject()">+ Add New Project</button>
             </div>
         </section>
@@ -833,9 +741,7 @@
         <section id="devlog" class="dev-log">
             <div class="container">
                 <h2 class="section-title">Development Log</h2>
-                <div class="log-entries" id="logEntries">
-                    <div class="loading"><div class="spinner"></div></div>
-                </div>
+                <div class="log-entries" id="logEntries"></div>
                 <button class="btn add-new-btn" onclick="addNewLog()">+ Add New Log Entry</button>
             </div>
         </section>
@@ -857,358 +763,177 @@
         </div>
     </footer>
 
-    <!-- Firebase SDK (NO STORAGE NEEDED!) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
     <script>
-        // ⚠️ REPLACE THIS WITH YOUR FIREBASE CONFIG ⚠️
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDEhZq_Cgh8kMTMh7_1kau2xSResZGmD1o",
-  authDomain: "just4learnin-portfolio.firebaseapp.com",
-  projectId: "just4learnin-portfolio",
-  storageBucket: "just4learnin-portfolio.firebasestorage.app",
-  messagingSenderId: "892344694841",
-  appId: "1:892344694841:web:35ea5f1302a9119f0a35e8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-        // Initialize Firebase (NO STORAGE!)
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // State
-        let currentUser = null;
+        // Data Storage (in memory - will be replaced with backend later)
+        let isAdmin = false;
         let currentEditId = null;
         let currentEditType = null;
 
-        // Keyboard Shortcut: Ctrl + L ONLY
-        document.addEventListener('keydown', function(e) {
-            // Check for Ctrl+L (both Windows/Linux and Mac with Ctrl key)
-            if (e.ctrlKey && e.key === 'l' && !e.metaKey) {
-                e.preventDefault(); // Prevent browser's default "go to address bar"
-                toggleAdmin();
+        let projects = [
+            {
+                id: 1,
+                title: "🕹️ Retro Pi Gaming System",
+                description: "Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games from multiple console generations. wireless controllers.",
+                tech: ["Raspberry Pi", "RetroPie", "Linux", "3D Printing", "Electronics"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "GitHub", url: "https://github.com/Just4Learnin" }
+                ],
+                image: ""
+            },
+            {
+                id: 2,
+                title: "🏠 Home-Lab 🏠",
+                description: "coming soon.",
+                tech: ["Proxmox", "Docker", "Kubernetes", "pfSense", "Grafana"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "Documentation", url: "#" }
+                ],
+                image: ""
+            },
+            {
+                id: 3,
+                title: "⚡ Koromi Themed Media Player ⚡",
+                description: "Created a custom media player with Koromi elements... currently it only streams and you can add mp3 files to play locally. still working out some kinks though. download is below.",
+                tech: ["ESP32", "Arduino", "MQTT", "Node.js", "React", "RaspberryPi"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "GitHub", url: "#" }
+                ],
+                image: ""
+            },
+            {
+                id: 4,
+                title: "📊 Network Monitoring Dashboard",
+                description: "Developed a comprehensive network monitoring solution with real-time analytics, alerting system, and beautiful visualizations. Tracks performance across multiple locations and devices.",
+                tech: ["Python", "Flask", "InfluxDB", "Grafana", "Docker"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "Live Demo", url: "https://www.youtube.com/watch?v=xvFZjo5PgG0" }
+                ],
+                image: ""
             }
-        });
+        ];
 
-        // Authentication State Listener
-        auth.onAuthStateChanged(user => {
-            currentUser = user;
-            if (user) {
-                document.body.classList.add('edit-mode');
-                document.getElementById('adminBar').classList.add('active');
-                document.getElementById('userEmail').textContent = user.email;
-            } else {
-                document.body.classList.remove('edit-mode');
-                document.getElementById('adminBar').classList.remove('active');
+        let logs = [
+            {
+                id: 1,
+                date: "Entry 1: September 16, 2025",
+                title: "Portfolio website / enviroment creation",
+                content: "Successfully created HTML script to edit this portfolio website along with the help of the LLM Claude.ai, much better than ChatGPT when it comes down to programing... all chatGPT did was confuse me however after about 6 hours of studying i have a small understanding of the structure of HTML body. it exciting until it's not... But i think im learning and retaining some of the information. there will be more to come and ill show some photos and other media to add to the this webpage. thank you again this whole site will be a work in progress, however i am excited to be learning. not only learning but Applying some of what i learned... next time devlog-exit"
+            },
+            {
+                id: 2,
+                date: "September 16, 2025",
+                title: "Retro Pi Case Design Iteration 3",
+                content: "Completed the three different iteration of the custom Retro Pi design & setup. This version features improved airflow with fans, better cable management, and an integrated personal system for home imoprovement"
+            },
+            {
+                id: 3,
+                date: "September 24-27, 2025",
+                title: "Completion of Custom MediaPlayer",
+                content: "completed basic HTML courses and began CSS basics on freecodeacedemy.com and utilized this information to complete a multimedia project to create an executable program to play music from desktop and mobile platforms. along with online recources i was able to create cool media player with a \"koromi\" style them the link is listed Here this is an ongoing process that i look forward to adding on. this project was overall fun and i am attempting to create these projects with as little use of AI to ensure i retain information."
+            },
+            {
+                id: 4,
+                date: "October 30, 2024",
+                title: "Network Monitoring Dashboard v2.0",
+                content: "Released version 2.0 of the network monitoring dashboard with new features including predictive analytics, automated incident response, and mobile optimization. The machine learning models are now accurately predicting network issues 30 minutes before they occur."
             }
-        });
+        ];
 
         // Initialize
-        async function init() {
-            await loadProjects();
-            await loadLogs();
+        function init() {
+            renderProjects();
+            renderLogs();
         }
 
-        // Load Projects from Firebase
-        async function loadProjects() {
-            try {
-                const snapshot = await db.collection('projects').orderBy('order').get();
-                const projectsGrid = document.getElementById('projectsGrid');
-                
-                if (snapshot.empty) {
-                    // Load default projects if none exist
-                    await loadDefaultProjects();
-                    return;
-                }
-                
-                projectsGrid.innerHTML = snapshot.docs.map(doc => {
-                    const p = doc.data();
-                    return `
-                        <div class="project-card" data-id="${doc.id}">
-                            ${currentUser ? `
-                            <div class="edit-controls">
-                                <button class="edit-btn" onclick="editProject('${doc.id}')">Edit</button>
-                                <button class="edit-btn delete-btn" onclick="deleteProject('${doc.id}')">Delete</button>
-                            </div>
-                            ` : ''}
-                            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.title}" class="project-image">` : ''}
-                            <h3 class="project-title">${p.title}</h3>
-                            <p class="project-description">${p.description}</p>
-                            <div class="project-tech">
-                                ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-                            </div>
-                            <div class="project-links">
-                                ${p.links.map(l => `<a href="${l.url}" class="project-link" ${l.url.startsWith('http') ? 'target="_blank"' : ''}>${l.text} →</a>`).join('')}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                document.getElementById('projectsGrid').innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Error loading projects. Please refresh.</p>';
-            }
+        // Render Projects
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = projects.map(p => `
+                <div class="project-card" data-id="${p.id}">
+                    ${isAdmin ? `
+                    <div class="edit-controls">
+                        <button class="edit-btn" onclick="editProject(${p.id})">Edit</button>
+                        <button class="edit-btn delete-btn" onclick="deleteProject(${p.id})">Delete</button>
+                    </div>
+                    ` : ''}
+                    ${p.image ? `<img src="${p.image}" alt="${p.title}" class="project-image">` : ''}
+                    <h3 class="project-title">${p.title}</h3>
+                    <p class="project-description">${p.description}</p>
+                    <div class="project-tech">
+                        ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+                    </div>
+                    <div class="project-links">
+                        ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} →</a>`).join('')}
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Load Logs from Firebase
-        async function loadLogs() {
-            try {
-                const snapshot = await db.collection('logs').orderBy('timestamp', 'desc').get();
-                const logEntries = document.getElementById('logEntries');
-                
-                if (snapshot.empty) {
-                    // Load default logs if none exist
-                    await loadDefaultLogs();
-                    return;
-                }
-                
-                logEntries.innerHTML = snapshot.docs.map(doc => {
-                    const l = doc.data();
-                    return `
-                        <div class="log-entry" data-id="${doc.id}">
-                            ${currentUser ? `
-                            <div class="edit-controls">
-                                <button class="edit-btn" onclick="editLog('${doc.id}')">Edit</button>
-                                <button class="edit-btn delete-btn" onclick="deleteLog('${doc.id}')">Delete</button>
-                            </div>
-                            ` : ''}
-                            <div class="log-date">${l.date}</div>
-                            <h3 class="log-title">${l.title}</h3>
-                            <div class="log-content">${l.content}</div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Error loading logs:', error);
-                document.getElementById('logEntries').innerHTML = '<p style="color: var(--text-secondary); text-align: center;">Error loading logs. Please refresh.</p>';
-            }
+        // Render Logs
+        function renderLogs() {
+            const container = document.getElementById('logEntries');
+            container.innerHTML = logs.map(l => `
+                <div class="log-entry" data-id="${l.id}">
+                    ${isAdmin ? `
+                    <div class="edit-controls">
+                        <button class="edit-btn" onclick="editLog(${l.id})">Edit</button>
+                        <button class="edit-btn delete-btn" onclick="deleteLog(${l.id})">Delete</button>
+                    </div>
+                    ` : ''}
+                    <div class="log-date">${l.date}</div>
+                    <h3 class="log-title">${l.title}</h3>
+                    <div class="log-content">${l.content}</div>
+                </div>
+            `).join('');
         }
 
-        // Load Default Projects (first time setup)
-        async function loadDefaultProjects() {
-            const defaultProjects = [
-                {
-                    title: "🕹️ Retro Pi Gaming System",
-                    description: "Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games from multiple console generations. wireless controllers.",
-                    tech: ["Raspberry Pi", "RetroPie", "Linux", "3D Printing", "Electronics"],
-                    links: [
-                        { text: "View Details", url: "#" },
-                        { text: "GitHub", url: "https://github.com/Just4Learnin" }
-                    ],
-                    imageUrl: "",
-                    order: 1
-                },
-                {
-                    title: "🏠 Home-Lab 🏠",
-                    description: "coming soon.",
-                    tech: ["Proxmox", "Docker", "Kubernetes", "pfSense", "Grafana"],
-                    links: [
-                        { text: "View Details", url: "#" },
-                        { text: "Documentation", url: "#" }
-                    ],
-                    imageUrl: "",
-                    order: 2
-                },
-                {
-                    title: "⚡ Koromi Themed Media Player ⚡",
-                    description: "Created a custom media player with Koromi elements... currently it only streams and you can add mp3 files to play locally. still working out some kinks though.",
-                    tech: ["ESP32", "Arduino", "MQTT", "Node.js", "React", "RaspberryPi"],
-                    links: [
-                        { text: "View Details", url: "#" },
-                        { text: "GitHub", url: "#" }
-                    ],
-                    imageUrl: "",
-                    order: 3
-                },
-                {
-                    title: "📊 Network Monitoring Dashboard",
-                    description: "Developed a comprehensive network monitoring solution with real-time analytics, alerting system, and beautiful visualizations.",
-                    tech: ["Python", "Flask", "InfluxDB", "Grafana", "Docker"],
-                    links: [
-                        { text: "View Details", url: "#" },
-                        { text: "Live Demo", url: "https://www.youtube.com/watch?v=xvFZjo5PgG0" }
-                    ],
-                    imageUrl: "",
-                    order: 4
-                }
-            ];
-
-            for (const project of defaultProjects) {
-                await db.collection('projects').add(project);
-            }
-            await loadProjects();
-        }
-
-        // Load Default Logs (first time setup)
-        async function loadDefaultLogs() {
-            const defaultLogs = [
-                {
-                    date: "Entry 1: September 16, 2025",
-                    title: "Portfolio website / enviroment creation",
-                    content: "Successfully created HTML script to edit this portfolio website along with the help of the LLM Claude.ai...",
-                    timestamp: firebase.firestore.Timestamp.fromDate(new Date('2025-09-16'))
-                },
-                {
-                    date: "September 16, 2025",
-                    title: "Retro Pi Case Design Iteration 3",
-                    content: "Completed the three different iteration of the custom Retro Pi design & setup...",
-                    timestamp: firebase.firestore.Timestamp.fromDate(new Date('2025-09-16'))
-                },
-                {
-                    date: "September 24-27, 2025",
-                    title: "Completion of Custom MediaPlayer",
-                    content: "completed basic HTML courses and began CSS basics on freecodeacedemy.com...",
-                    timestamp: firebase.firestore.Timestamp.fromDate(new Date('2025-09-27'))
-                },
-                {
-                    date: "October 30, 2024",
-                    title: "Network Monitoring Dashboard v2.0",
-                    content: "Released version 2.0 of the network monitoring dashboard with new features...",
-                    timestamp: firebase.firestore.Timestamp.fromDate(new Date('2024-10-30'))
-                }
-            ];
-
-            for (const log of defaultLogs) {
-                await db.collection('logs').add(log);
-            }
-            await loadLogs();
-        }
-
-        // Authentication Functions
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            if (tab === 'login') {
-                document.querySelectorAll('.tab')[0].classList.add('active');
-                document.getElementById('loginTab').classList.add('active');
+        // Admin Functions
+        function toggleAdmin() {
+            if (isAdmin) {
+                exitAdmin();
             } else {
-                document.querySelectorAll('.tab')[1].classList.add('active');
-                document.getElementById('registerTab').classList.add('active');
+                document.getElementById('loginModal').classList.add('active');
             }
         }
 
-        async function registerUser() {
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerPasswordConfirm').value;
-            const errorDiv = document.getElementById('registerError');
-            const successDiv = document.getElementById('registerSuccess');
-            const btn = document.getElementById('registerBtn');
-            
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
-            
-            if (!email || !password) {
-                errorDiv.textContent = 'Please fill in all fields';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                errorDiv.textContent = 'Passwords do not match';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            if (password.length < 6) {
-                errorDiv.textContent = 'Password must be at least 6 characters';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            btn.disabled = true;
-            btn.textContent = 'Creating Account...';
-            
-            try {
-                await auth.createUserWithEmailAndPassword(email, password);
-                successDiv.textContent = 'Account created successfully! You can now login.';
-                successDiv.style.display = 'block';
-                document.getElementById('registerEmail').value = '';
-                document.getElementById('registerPassword').value = '';
-                document.getElementById('registerPasswordConfirm').value = '';
-                
-                setTimeout(() => {
-                    switchTab('login');
-                    document.getElementById('loginEmail').value = email;
-                }, 2000);
-            } catch (error) {
-                errorDiv.textContent = error.message;
-                errorDiv.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
-        }
-
-        async function loginUser() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-            const btn = document.getElementById('loginBtn');
-            
-            errorDiv.style.display = 'none';
-            
-            if (!email || !password) {
-                errorDiv.textContent = 'Please fill in all fields';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            btn.disabled = true;
-            btn.textContent = 'Logging in...';
-            
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
+        function login() {
+            const password = document.getElementById('adminPassword').value;
+            // Simple password check (will be replaced with secure auth)
+            if (password === 'admin123') {
+                isAdmin = true;
+                document.body.classList.add('edit-mode');
+                document.getElementById('adminBar').classList.add('active');
                 closeModal();
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-            } catch (error) {
-                errorDiv.textContent = 'Invalid email or password';
-                errorDiv.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Login';
+                renderProjects();
+                renderLogs();
+                alert('Admin mode activated! You can now edit content.');
+            } else {
+                alert('Incorrect password!');
             }
         }
 
         function exitAdmin() {
-            auth.signOut();
+            isAdmin = false;
+            document.body.classList.remove('edit-mode');
+            document.getElementById('adminBar').classList.remove('active');
+            renderProjects();
+            renderLogs();
         }
 
-        function toggleAdmin() {
-            if (currentUser) {
-                exitAdmin();
-            } else {
-                document.getElementById('authModal').classList.add('active');
-            }
-        }
+        
 
         function closeModal() {
             document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            document.getElementById('adminPassword').value = '';
         }
 
         // Edit Project
-        async function editProject(id) {
-            const doc = await db.collection('projects').doc(id).get();
-            const project = doc.data();
+        function editProject(id) {
+            const project = projects.find(p => p.id === id);
             currentEditId = id;
             currentEditType = 'project';
             
@@ -1227,40 +952,22 @@ const app = initializeApp(firebaseConfig);
                     <input type="text" id="editTech" value="${project.tech.join(', ')}">
                 </div>
                 <div class="form-group">
-                    <label>Image Options:</label>
-                    <div style="margin-bottom: 0.5rem;">
-                        <input type="radio" name="imageMethod" id="methodUrl" value="url" checked onchange="toggleImageMethod()">
-                        <label for="methodUrl" style="display: inline; margin-left: 0.5rem;">Image URL</label>
-                    </div>
-                    <div>
-                        <input type="radio" name="imageMethod" id="methodUpload" value="upload" onchange="toggleImageMethod()">
-                        <label for="methodUpload" style="display: inline; margin-left: 0.5rem;">Upload Image (stored as Base64)</label>
-                    </div>
+                    <label>Image URL (or upload below)</label>
+                    <input type="text" id="editImage" value="${project.image || ''}">
                 </div>
-                <div class="form-group" id="urlMethod">
-                    <label>Image URL (e.g., from Imgur, GitHub, etc.)</label>
-                    <input type="text" id="editImageUrl" value="${project.imageUrl || ''}" placeholder="https://i.imgur.com/example.jpg">
-                    <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
-                        💡 Tip: Upload to <a href="https://imgur.com/upload" target="_blank" style="color: var(--accent);">Imgur</a> or use GitHub repo images
-                    </small>
-                </div>
-                <div class="form-group" id="uploadMethod" style="display: none;">
-                    <label>Upload Image (Max 1MB recommended)</label>
+                <div class="form-group">
+                    <label>Upload Image</label>
                     <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
-                    <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
-                        ⚠️ Images stored as Base64. Keep files under 1MB for best performance.
-                    </small>
+                    ${project.image ? `<img src="${project.image}" class="image-preview" id="imagePreview">` : '<img id="imagePreview" class="image-preview" style="display:none;">'}
                 </div>
-                ${project.imageUrl ? `<img src="${project.imageUrl}" class="image-preview" id="imagePreview">` : '<img id="imagePreview" class="image-preview" style="display:none;">'}
             `;
             
             document.getElementById('editModal').classList.add('active');
         }
 
         // Edit Log
-        async function editLog(id) {
-            const doc = await db.collection('logs').doc(id).get();
-            const log = doc.data();
+        function editLog(id) {
+            const log = logs.find(l => l.id === id);
             currentEditId = id;
             currentEditType = 'log';
             
@@ -1283,177 +990,106 @@ const app = initializeApp(firebaseConfig);
             document.getElementById('editModal').classList.add('active');
         }
 
-        // Toggle Image Method
-        function toggleImageMethod() {
-            const method = document.querySelector('input[name="imageMethod"]:checked').value;
-            document.getElementById('urlMethod').style.display = method === 'url' ? 'block' : 'none';
-            document.getElementById('uploadMethod').style.display = method === 'upload' ? 'block' : 'none';
-        }
-
         // Save Edit
-        async function saveEdit() {
-            const btn = document.getElementById('saveEditBtn');
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
-            
-            try {
-                if (currentEditType === 'project') {
-                    const imageUrl = document.getElementById('editImageUrl') ? document.getElementById('editImageUrl').value : '';
-                    
-                    const updateData = {
-                        title: document.getElementById('editTitle').value,
-                        description: document.getElementById('editDescription').value,
-                        tech: document.getElementById('editTech').value.split(',').map(t => t.trim()),
-                        imageUrl: imageUrl
-                    };
-                    
-                    await db.collection('projects').doc(currentEditId).update(updateData);
-                    await loadProjects();
-                } else if (currentEditType === 'log') {
-                    const updateData = {
-                        date: document.getElementById('editDate').value,
-                        title: document.getElementById('editTitle').value,
-                        content: document.getElementById('editContent').value,
-                        timestamp: firebase.firestore.Timestamp.now()
-                    };
-                    
-                    await db.collection('logs').doc(currentEditId).update(updateData);
-                    await loadLogs();
-                }
-                
-                closeModal();
-                alert('Changes saved successfully!');
-            } catch (error) {
-                console.error('Error saving:', error);
-                alert('Error saving changes. Please try again.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Save';
+        function saveEdit() {
+            if (currentEditType === 'project') {
+                const project = projects.find(p => p.id === currentEditId);
+                project.title = document.getElementById('editTitle').value;
+                project.description = document.getElementById('editDescription').value;
+                project.tech = document.getElementById('editTech').value.split(',').map(t => t.trim());
+                project.image = document.getElementById('editImage').value;
+                renderProjects();
+            } else if (currentEditType === 'log') {
+                const log = logs.find(l => l.id === currentEditId);
+                log.date = document.getElementById('editDate').value;
+                log.title = document.getElementById('editTitle').value;
+                log.content = document.getElementById('editContent').value;
+                renderLogs();
             }
+            
+            closeModal();
+            alert('Changes saved! (Remember to click "Save All Changes" to persist)');
         }
 
         // Delete Functions
-        async function deleteProject(id) {
-            if (!confirm('Are you sure you want to delete this project?')) return;
-            
-            try {
-                await db.collection('projects').doc(id).delete();
-                await loadProjects();
-            } catch (error) {
-                console.error('Error deleting project:', error);
-                alert('Error deleting project. Please try again.');
+        function deleteProject(id) {
+            if (confirm('Are you sure you want to delete this project?')) {
+                projects = projects.filter(p => p.id !== id);
+                renderProjects();
             }
         }
 
-        async function deleteLog(id) {
-            if (!confirm('Are you sure you want to delete this log entry?')) return;
-            
-            try {
-                await db.collection('logs').doc(id).delete();
-                await loadLogs();
-            } catch (error) {
-                console.error('Error deleting log:', error);
-                alert('Error deleting log. Please try again.');
+        function deleteLog(id) {
+            if (confirm('Are you sure you want to delete this log entry?')) {
+                logs = logs.filter(l => l.id !== id);
+                renderLogs();
             }
         }
 
         // Add New Functions
-        async function addNewProject() {
-            try {
-                const snapshot = await db.collection('projects').get();
-                const maxOrder = snapshot.docs.reduce((max, doc) => Math.max(max, doc.data().order || 0), 0);
-                
-                const newProject = {
-                    title: "New Project",
-                    description: "Project description here",
-                    tech: ["Technology1", "Technology2"],
-                    links: [{ text: "View Details", url: "#" }],
-                    imageUrl: "",
-                    order: maxOrder + 1
-                };
-                
-                const docRef = await db.collection('projects').add(newProject);
-                await loadProjects();
-                editProject(docRef.id);
-            } catch (error) {
-                console.error('Error adding project:', error);
-                alert('Error adding project. Please try again.');
-            }
+        function addNewProject() {
+            const newId = Math.max(...projects.map(p => p.id), 0) + 1;
+            projects.push({
+                id: newId,
+                title: "New Project",
+                description: "Project description here",
+                tech: ["Technology1", "Technology2"],
+                links: [
+                    { text: "View Details", url: "#" }
+                ],
+                image: ""
+            });
+            renderProjects();
+            editProject(newId);
         }
 
-        async function addNewLog() {
-            try {
-                const today = new Date().toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
-                });
-                
-                const newLog = {
-                    date: today,
-                    title: "New Log Entry",
-                    content: "Write your log entry content here...",
-                    timestamp: firebase.firestore.Timestamp.now()
-                };
-                
-                const docRef = await db.collection('logs').add(newLog);
-                await loadLogs();
-                editLog(docRef.id);
-            } catch (error) {
-                console.error('Error adding log:', error);
-                alert('Error adding log. Please try again.');
-            }
+        function addNewLog() {
+            const newId = Math.max(...logs.map(l => l.id), 0) + 1;
+            const today = new Date().toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+            
+            logs.unshift({
+                id: newId,
+                date: today,
+                title: "New Log Entry",
+                content: "Write your log entry content here..."
+            });
+            renderLogs();
+            editLog(newId);
         }
 
-        // Image Upload Handler (Base64)
+        // Image Upload Handler
         function handleImageUpload(event) {
             const file = event.target.files[0];
-            if (!file) return;
-            
-            // Check file size (warn if over 1MB)
-            if (file.size > 1024 * 1024) {
-                if (!confirm('This image is larger than 1MB. It may slow down your site. Continue anyway?')) {
-                    event.target.value = '';
-                    return;
-                }
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    document.getElementById('editImage').value = imageUrl;
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = imageUrl;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             }
-            
-            const progressDiv = document.getElementById('uploadProgress');
-            progressDiv.style.display = 'block';
-            progressDiv.textContent = 'Converting image...';
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Image = e.target.result;
-                
-                // Store in hidden input or update directly
-                if (!document.getElementById('editImageUrl')) {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.id = 'editImageUrl';
-                    document.getElementById('editModalContent').appendChild(input);
-                }
-                document.getElementById('editImageUrl').value = base64Image;
-                
-                // Show preview
-                const preview = document.getElementById('imagePreview');
-                preview.src = base64Image;
-                preview.style.display = 'block';
-                
-                progressDiv.textContent = 'Image ready! Click Save to apply.';
-                progressDiv.style.color = 'var(--accent)';
-                
-                setTimeout(() => {
-                    progressDiv.style.display = 'none';
-                }, 2000);
+        }
+
+        // Save All Changes (This would connect to a backend in production)
+        function saveChanges() {
+            // In a real app, this would send data to a server
+            const data = {
+                projects: projects,
+                logs: logs
             };
             
-            reader.onerror = function() {
-                progressDiv.textContent = 'Error reading image';
-                progressDiv.style.color = '#ff5f56';
-            };
+            // For now, we'll just show the data in console
+            console.log('Saving data:', data);
             
-            reader.readAsDataURL(file);
+            // Simulate save
+            alert('All changes saved successfully!\n\n(In production, this would save to a database)');
         }
 
         // Initialize on load

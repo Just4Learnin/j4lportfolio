@@ -28,37 +28,16 @@
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            width: 100%;
         }
 
-        /* Admin Button */
-        .admin-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: var(--bg-primary);
-            border: none;
-            padding: 1rem;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            z-index: 2000;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(23, 227, 136, 0.3);
-        }
-
-        .admin-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(23, 227, 136, 0.5);
-        }
-
-        /* Login Modal */
         .modal {
             display: none;
             position: fixed;
@@ -147,7 +126,6 @@
             background: #ff4444;
         }
 
-        /* Edit Mode Styles */
         .edit-mode .project-card,
         .edit-mode .log-entry {
             position: relative;
@@ -195,7 +173,6 @@
             display: block;
         }
 
-        /* Admin Bar */
         .admin-bar {
             display: none;
             position: fixed;
@@ -224,7 +201,6 @@
             margin-left: 1rem;
         }
 
-        /* Image Upload */
         .image-preview {
             max-width: 200px;
             max-height: 200px;
@@ -240,7 +216,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Header & Navigation */
         header {
             position: fixed;
             top: 0;
@@ -307,7 +282,6 @@
             width: 100%;
         }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -328,6 +302,13 @@
             pointer-events: none;
         }
 
+        .hero-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            width: 100%;
+        }
+
         .hero-content {
             flex: 1;
             max-width: 600px;
@@ -335,7 +316,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 5vw, 4rem);
             font-weight: 800;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
@@ -390,6 +371,7 @@
             padding: 1rem;
             border: 1px solid var(--border);
             max-width: 400px;
+            width: 100%;
             animation: slideInRight 1s ease-out 0.8s both;
         }
 
@@ -415,10 +397,14 @@
             color: var(--accent);
         }
 
-        /* Projects Section */
         .projects {
-            padding: 5rem 0;
+            padding: 5rem 0 10rem 0; /* Increased bottom padding for more section gap */
             background: var(--bg-secondary);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
         }
 
         .section-title {
@@ -427,23 +413,118 @@
             text-align: center;
             margin-bottom: 3rem;
             color: var(--text-primary);
+            position: absolute;
+            top: 2rem;
+            left: 0;
+            right: 0;
         }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        /* Smooth Scroll-Snap Carousels */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: clamp(400px, 50vw, 550px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            touch-action: pan-y;
         }
 
-        .project-card {
+        .carousel {
+            display: flex;
+            column-gap: clamp(10px, 2vw, 20px);
+            overflow: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            width: 100%;
+            height: 100%;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-item {
+            flex: 0 0 auto;
+            scroll-snap-align: center;
+            width: clamp(250px, 30vw, 400px);
+            padding: clamp(1rem, 2vw, 2rem);
+            min-height: 450px; /* Uniform height for consistency */
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 479px) {
+            .carousel-wrapper { height: 450px; }
+            .carousel-item { width: 90vw; }
+        }
+
+        @media (min-width: 480px) and (max-width: 767px) {
+            .carousel-wrapper { height: 480px; }
+            .carousel-item { width: 80vw; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .carousel-wrapper { height: 500px; }
+            .carousel-item { width: clamp(300px, 35vw, 350px); }
+        }
+
+        @media (min-width: 1024px) and (max-width: 1199px) {
+            .carousel-wrapper { height: 520px; }
+            .carousel-item { width: 350px; }
+        }
+
+        @media (min-width: 1200px) {
+            .carousel-wrapper { height: 550px; }
+            .carousel-item { width: 400px; }
+        }
+
+        /* Navigation Arrows */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: var(--text-primary);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 20;
+            transition: background 0.3s ease;
+            display: none;
+        }
+
+        .carousel-wrapper:hover .carousel-nav {
+            display: block;
+        }
+
+        .carousel-nav:hover {
+            background: var(--accent);
+        }
+
+        .carousel-nav.prev { left: 10px; }
+        .carousel-nav.next { right: 10px; }
+
+        @media (max-width: 767px) {
+            .carousel-nav { display: none !important; }
+        }
+
+        .project-card, .log-entry {
             background: var(--bg-card);
             border-radius: 15px;
-            padding: 2rem;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem; /* Increased for better text breathing room */
+            min-height: 450px; /* Uniform height for all entries */
         }
 
         .project-card::before {
@@ -462,22 +543,25 @@
             transform: scaleX(1);
         }
 
-        .project-card:hover {
+        .project-card:hover, .log-entry:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
         .project-title {
-            font-size: 1.4rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.4rem);
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             color: var(--accent);
         }
 
-        .project-description {
+        .project-description, .log-content {
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+            flex-grow: 1;
+            margin: 0.5rem 0 1rem 0;
         }
 
         .project-tech {
@@ -499,6 +583,7 @@
         .project-links {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .project-link {
@@ -506,33 +591,11 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
         }
 
         .project-link:hover {
             color: var(--accent);
-        }
-
-        /* Dev Log Section */
-        .dev-log {
-            padding: 5rem 0;
-        }
-
-        .log-entries {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .log-entry {
-            background: var(--bg-card);
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--accent);
-            transition: transform 0.3s ease;
-        }
-
-        .log-entry:hover {
-            transform: translateX(10px);
         }
 
         .log-date {
@@ -543,17 +606,84 @@
         }
 
         .log-title {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
-        .log-content {
+        .dev-log {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .toggle-btn {
+            background: var(--bg-card);
             color: var(--text-secondary);
-            line-height: 1.6;
+            border: 1px solid var(--border);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        /* Footer */
+        .toggle-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .toggle-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .toggle-btn:hover::after {
+            opacity: 1;
+        }
+
+        .log-entries {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Horizontal grid for list */
+        }
+
+        .log-carousel-wrapper {
+            display: none;
+        }
+
+        .log-carousel-wrapper.active {
+            display: block;
+        }
+
         footer {
             background: var(--bg-primary);
             padding: 3rem 0;
@@ -572,13 +702,14 @@
         .social-links {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .social-link {
             color: var(--text-secondary);
             text-decoration: none;
-            padding: 0.5rem;
-            border-radius: 50%;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
             background: var(--bg-card);
             transition: all 0.3s ease;
         }
@@ -588,7 +719,6 @@
             transform: translateY(-2px);
         }
 
-        /* Animations */
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -620,41 +750,58 @@
             51%, 100% { opacity: 0; }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
             .nav-links {
                 display: none;
             }
             
             .hero {
+                padding-top: 100px;
+            }
+
+            .hero-wrapper {
                 flex-direction: column;
                 text-align: center;
                 gap: 2rem;
             }
             
-            .terminal-window {
-                max-width: 300px;
+            .hero-content {
+                max-width: 100%;
             }
-            
+
+            .terminal-window {
+                max-width: 100%;
+            }
+
+            .log-entries {
+                grid-template-columns: 1fr;
+            }
+
             .footer-content {
                 flex-direction: column;
                 text-align: center;
             }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Dev Log Spacing Fix */
+        .dev-log .section-title {
+            margin-bottom: 2rem;
         }
     </style>
 </head>
 <body>
-    <!-- Admin Bar -->
     <div class="admin-bar" id="adminBar">
         🔒 Admin Mode Active
         <button onclick="saveChanges()">Save All Changes</button>
         <button onclick="exitAdmin()">Exit Admin</button>
     </div>
 
-    <!-- Admin Toggle Button -->
-    <button class="admin-toggle" onclick="toggleAdmin()">🔧</button>
+    <button class="admin-toggle" onclick="toggleAdmin()" style="display: none;">🔧</button>
 
-    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <h2>Admin Login</h2>
@@ -664,13 +811,9 @@
             </div>
             <button class="btn" onclick="login()">Login</button>
             <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 0.9rem;">
-                Default password: admin123 (Change this!)
-            </p>
         </div>
     </div>
 
-    <!-- Edit Modals -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <h2 id="editModalTitle">Edit Item</h2>
@@ -695,7 +838,7 @@
     <main>
         <section id="home" class="hero">
             <div class="container">
-                <div style="display: flex; align-items: center; gap: 3rem;">
+                <div class="hero-wrapper">
                     <div class="hero-content">
                         <h1>Just4Learning's devlog</h1>
                         <p class="hero-subtitle">Building cool stuff with code and hardware</p>
@@ -733,15 +876,30 @@
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">Featured Projects</h2>
-                <div class="projects-grid" id="projectsGrid"></div>
-                <button class="btn add-new-btn" onclick="addNewProject()">+ Add New Project</button>
+                <div class="carousel-wrapper" id="projectsCarouselWrapper">
+                    <button class="carousel-nav prev" onclick="nextSlide('projects', -1)">&lt;</button>
+                    <button class="carousel-nav next" onclick="nextSlide('projects', 1)">&gt;</button>
+                    <div class="carousel projects-carousel" id="projectsCarousel"></div>
+                </div>
+                <button class="btn add-new-btn" onclick="addNewProject()" style="margin-top: 2rem;">+ Add New Project</button>
             </div>
         </section>
 
         <section id="devlog" class="dev-log">
             <div class="container">
                 <h2 class="section-title">Development Log</h2>
-                <div class="log-entries" id="logEntries"></div>
+                <div class="view-toggle">
+                    <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">📋</button>
+                    <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">🔄</button>
+                </div>
+                <div id="logContainer">
+                    <div class="log-entries" id="logEntries"></div>
+                    <div class="log-carousel-wrapper" id="logCarouselWrapper">
+                        <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">&lt;</button>
+                        <button class="carousel-nav next" onclick="nextSlide('logs', 1)">&gt;</button>
+                        <div class="carousel log-carousel" id="logCarousel"></div>
+                    </div>
+                </div>
                 <button class="btn add-new-btn" onclick="addNewLog()">+ Add New Log Entry</button>
             </div>
         </section>
@@ -751,7 +909,7 @@
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <p style="color: var(--text-secondary);">© 2025 LifeMediaServices ill get a copyright eventually.</p>
+                    <p style="color: var(--text-secondary);">© 2025 LifeMediaServices - Work in Progress</p>
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/Just4Learnin" class="social-link" title="GitHub">GitHub</a>
@@ -764,16 +922,38 @@
     </footer>
 
     <script>
-        // Data Storage (in memory - will be replaced with backend later)
+        const AUTH_KEY = 'c906aa20dbf0dcd3a19efb1f5abc50091a9fe71a953baa53a6cd238918137342';
+
+        async function hashPassword(password) {
+            try {
+                const msgBuffer = new TextEncoder().encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            } catch (err) {
+                console.error('Error hashing password:', err);
+                return '';
+            }
+        }
+
+        // Keyboard shortcut listener (Ctrl+L)
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'l') {
+                event.preventDefault();
+                toggleAdmin();
+            }
+        });
+
         let isAdmin = false;
         let currentEditId = null;
         let currentEditType = null;
+        let logViewMode = 'list';
 
         let projects = [
             {
                 id: 1,
                 title: "🕹️ Retro Pi Gaming System",
-                description: "Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games from multiple console generations. wireless controllers.",
+                description: "Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games from multiple console generations with wireless controllers.",
                 tech: ["Raspberry Pi", "RetroPie", "Linux", "3D Printing", "Electronics"],
                 links: [
                     { text: "View Details", url: "#" },
@@ -783,8 +963,8 @@
             },
             {
                 id: 2,
-                title: "🏠 Home-Lab 🏠",
-                description: "coming soon.",
+                title: "🏠 Home Lab",
+                description: "Coming soon.",
                 tech: ["Proxmox", "Docker", "Kubernetes", "pfSense", "Grafana"],
                 links: [
                     { text: "View Details", url: "#" },
@@ -794,8 +974,8 @@
             },
             {
                 id: 3,
-                title: "⚡ Koromi Themed Media Player ⚡",
-                description: "Created a custom media player with Koromi elements... currently it only streams and you can add mp3 files to play locally. still working out some kinks though. download is below.",
+                title: "⚡ Koromi Themed Media Player",
+                description: "Created a custom media player with Koromi elements. Currently it streams and plays mp3 files locally. Still working out some kinks though. Download is below.",
                 tech: ["ESP32", "Arduino", "MQTT", "Node.js", "React", "RaspberryPi"],
                 links: [
                     { text: "View Details", url: "#" },
@@ -820,20 +1000,20 @@
             {
                 id: 1,
                 date: "Entry 1: September 16, 2025",
-                title: "Portfolio website / enviroment creation",
-                content: "Successfully created HTML script to edit this portfolio website along with the help of the LLM Claude.ai, much better than ChatGPT when it comes down to programing... all chatGPT did was confuse me however after about 6 hours of studying i have a small understanding of the structure of HTML body. it exciting until it's not... But i think im learning and retaining some of the information. there will be more to come and ill show some photos and other media to add to the this webpage. thank you again this whole site will be a work in progress, however i am excited to be learning. not only learning but Applying some of what i learned... next time devlog-exit"
+                title: "Portfolio website / environment creation",
+                content: "Successfully created HTML script to edit this portfolio website with the help of Claude.ai. Much better than ChatGPT when it comes down to programming. After about 6 hours of studying I have a small understanding of the structure of HTML. It's exciting until it's not... But I think I'm learning and retaining some of the information. There will be more to come and I'll show some photos and other media to add to this webpage. Thank you again, this whole site will be a work in progress, however I am excited to be learning. Not only learning but applying some of what I learned. Next time devlog-exit."
             },
             {
                 id: 2,
                 date: "September 16, 2025",
                 title: "Retro Pi Case Design Iteration 3",
-                content: "Completed the three different iteration of the custom Retro Pi design & setup. This version features improved airflow with fans, better cable management, and an integrated personal system for home imoprovement"
+                content: "Completed the three different iterations of the custom Retro Pi design and setup. This version features improved airflow with fans, better cable management, and an integrated personal system for home improvement."
             },
             {
                 id: 3,
                 date: "September 24-27, 2025",
                 title: "Completion of Custom MediaPlayer",
-                content: "completed basic HTML courses and began CSS basics on freecodeacedemy.com and utilized this information to complete a multimedia project to create an executable program to play music from desktop and mobile platforms. along with online recources i was able to create cool media player with a \"koromi\" style them the link is listed Here this is an ongoing process that i look forward to adding on. this project was overall fun and i am attempting to create these projects with as little use of AI to ensure i retain information."
+                content: "Completed basic HTML courses and began CSS basics on freecodeacademy.com and utilized this information to complete a multimedia project to create an executable program to play music from desktop and mobile platforms. Along with online resources I was able to create a cool media player with a Koromi style theme. The link is listed here. This is an ongoing process that I look forward to adding on. This project was overall fun and I am attempting to create these projects with as little use of AI to ensure I retain information."
             },
             {
                 id: 4,
@@ -843,257 +1023,504 @@
             }
         ];
 
-        // Initialize
-        function init() {
-            renderProjects();
-            renderLogs();
-        }
+        // Smooth Carousel Functions
+        let projectInterval, logInterval;
+        const PROJECT_PAUSE = 4000;
+        const LOG_PAUSE = 6000;
 
-        // Render Projects
-        function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
-            grid.innerHTML = projects.map(p => `
-                <div class="project-card" data-id="${p.id}">
-                    ${isAdmin ? `
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="editProject(${p.id})">Edit</button>
-                        <button class="edit-btn delete-btn" onclick="deleteProject(${p.id})">Delete</button>
-                    </div>
-                    ` : ''}
-                    ${p.image ? `<img src="${p.image}" alt="${p.title}" class="project-image">` : ''}
-                    <h3 class="project-title">${p.title}</h3>
-                    <p class="project-description">${p.description}</p>
-                    <div class="project-tech">
-                        ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-                    </div>
-                    <div class="project-links">
-                        ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} →</a>`).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render Logs
-        function renderLogs() {
-            const container = document.getElementById('logEntries');
-            container.innerHTML = logs.map(l => `
-                <div class="log-entry" data-id="${l.id}">
-                    ${isAdmin ? `
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="editLog(${l.id})">Edit</button>
-                        <button class="edit-btn delete-btn" onclick="deleteLog(${l.id})">Delete</button>
-                    </div>
-                    ` : ''}
-                    <div class="log-date">${l.date}</div>
-                    <h3 class="log-title">${l.title}</h3>
-                    <div class="log-content">${l.content}</div>
-                </div>
-            `).join('');
-        }
-
-        // Admin Functions
-        function toggleAdmin() {
-            if (isAdmin) {
-                exitAdmin();
-            } else {
-                document.getElementById('loginModal').classList.add('active');
+        function nextSlide(type, direction) {
+            try {
+                const carouselId = type === 'projects' ? 'projectsCarousel' : 'logCarousel';
+                const carousel = document.getElementById(carouselId);
+                if (!carousel || !carousel.children[0]) {
+                    console.warn(`Carousel ${carouselId} is empty or not found`);
+                    return;
+                }
+                const slideWidth = carousel.children[0].offsetWidth || 0;
+                const gap = parseFloat(getComputedStyle(carousel).columnGap) || 0;
+                const current = Math.round(carousel.scrollLeft / (slideWidth + gap));
+                const target = current + direction;
+                carousel.scrollTo({
+                    left: target * (slideWidth + gap),
+                    behavior: 'smooth'
+                });
+            } catch (err) {
+                console.error('Error in nextSlide:', err);
             }
         }
 
-        function login() {
-            const password = document.getElementById('adminPassword').value;
-            // Simple password check (will be replaced with secure auth)
-            if (password === 'admin123') {
-                isAdmin = true;
-                document.body.classList.add('edit-mode');
-                document.getElementById('adminBar').classList.add('active');
-                closeModal();
-                renderProjects();
+        function setupAutoPlay(carouselId, pause) {
+            try {
+                return setInterval(() => {
+                    nextSlide(carouselId === 'projectsCarousel' ? 'projects' : 'logs', 1);
+                }, pause);
+            } catch (err) {
+                console.error('Error setting up autoplay:', err);
+                return null;
+            }
+        }
+
+        function pauseAutoPlay(type) {
+            try {
+                clearInterval(type === 'projects' ? projectInterval : logInterval);
+            } catch (err) {
+                console.error('Error pausing autoplay:', err);
+            }
+        }
+
+        function resumeAutoPlay(type, pause) {
+            try {
+                pauseAutoPlay(type);
+                if (type === 'projects') projectInterval = setupAutoPlay('projectsCarousel', pause);
+                else logInterval = setupAutoPlay('logCarousel', LOG_PAUSE);
+            } catch (err) {
+                console.error('Error resuming autoplay:', err);
+            }
+        }
+
+        // Event listeners for pause/resume
+        function addInteractionListeners(wrapperId, type, pause) {
+            try {
+                const wrapper = document.getElementById(wrapperId);
+                if (!wrapper) {
+                    console.warn(`Wrapper ${wrapperId} not found`);
+                    return;
+                }
+                wrapper.addEventListener('mouseenter', () => pauseAutoPlay(type));
+                wrapper.addEventListener('mouseleave', () => resumeAutoPlay(type, pause));
+                wrapper.addEventListener('touchstart', () => pauseAutoPlay(type), { passive: true });
+                wrapper.addEventListener('touchend', () => setTimeout(() => resumeAutoPlay(type, pause), 3000), { passive: true });
+            } catch (err) {
+                console.error('Error adding interaction listeners:', err);
+            }
+        }
+
+        function renderProjects() {
+            try {
+                const carousel = document.getElementById('projectsCarousel');
+                if (!carousel) {
+                    console.warn('Projects carousel not found');
+                    return;
+                }
+                carousel.innerHTML = projects.map(p => `
+                    <div class="carousel-item project-card" data-id="${p.id}">
+                        ${isAdmin ? `
+                        <div class="edit-controls">
+                            <button class="edit-btn" onclick="editProject(${p.id})">Edit</button>
+                            <button class="edit-btn delete-btn" onclick="deleteProject(${p.id})">Delete</button>
+                        </div>
+                        ` : ''}
+                        ${p.image ? `<img src="${p.image}" alt="${p.title}" class="project-image">` : ''}
+                        <h3 class="project-title">${p.title}</h3>
+                        <p class="project-description">${p.description}</p>
+                        <div class="project-tech">
+                            ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+                        </div>
+                        <div class="project-links">
+                            ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} →</a>`).join('')}
+                        </div>
+                    </div>
+                `).join('');
+                addInteractionListeners('projectsCarouselWrapper', 'projects', PROJECT_PAUSE);
+                projectInterval = setupAutoPlay('projectsCarousel', PROJECT_PAUSE);
+            } catch (err) {
+                console.error('Error rendering projects:', err);
+            }
+        }
+
+        function renderLogs() {
+            try {
+                const container = document.getElementById('logContainer');
+                if (!container) {
+                    console.warn('Log container not found');
+                    return;
+                }
+                
+                if (logViewMode === 'list') {
+                    container.innerHTML = `<div class="log-entries" id="logEntries"></div>`;
+                    const logEntries = document.getElementById('logEntries');
+                    if (!logEntries) {
+                        console.warn('Log entries container not found');
+                        return;
+                    }
+                    logEntries.innerHTML = logs.map(l => `
+                        <div class="log-entry" data-id="${l.id}">
+                            ${isAdmin ? `
+                            <div class="edit-controls">
+                                <button class="edit-btn" onclick="editLog(${l.id})">Edit</button>
+                                <button class="edit-btn delete-btn" onclick="deleteLog(${l.id})">Delete</button>
+                            </div>
+                            ` : ''}
+                            <div class="log-date">${l.date}</div>
+                            <h3 class="log-title">${l.title}</h3>
+                            <div class="log-content">${l.content}</div>
+                        </div>
+                    `).join('');
+                    const logCarouselWrapper = document.getElementById('logCarouselWrapper');
+                    if (logCarouselWrapper) logCarouselWrapper.classList.remove('active');
+                    pauseAutoPlay('logs');
+                } else {
+                    container.innerHTML = `
+                        <div class="log-carousel-wrapper active" id="logCarouselWrapper">
+                            <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">&lt;</button>
+                            <button class="carousel-nav next" onclick="nextSlide('logs', 1)">&gt;</button>
+                            <div class="carousel log-carousel" id="logCarousel"></div>
+                        </div>
+                    `;
+                    const logCarousel = document.getElementById('logCarousel');
+                    if (!logCarousel) {
+                        console.warn('Log carousel not found');
+                        return;
+                    }
+                    logCarousel.innerHTML = logs.map(l => `
+                        <div class="carousel-item log-entry" data-id="${l.id}">
+                            ${isAdmin ? `
+                            <div class="edit-controls">
+                                <button class="edit-btn" onclick="editLog(${l.id})">Edit</button>
+                                <button class="edit-btn delete-btn" onclick="deleteLog(${l.id})">Delete</button>
+                            </div>
+                            ` : ''}
+                            <div class="log-date">${l.date}</div>
+                            <h3 class="log-title">${l.title}</h3>
+                            <div class="log-content">${l.content}</div>
+                        </div>
+                    `).join('');
+                    addInteractionListeners('logCarouselWrapper', 'logs', LOG_PAUSE);
+                    logInterval = setupAutoPlay('logCarousel', LOG_PAUSE);
+                }
+            } catch (err) {
+                console.error('Error rendering logs:', err);
+            }
+        }
+
+        function toggleLogView(mode) {
+            try {
+                if (!event || !event.target) {
+                    console.warn('Event or event.target is undefined in toggleLogView');
+                    return;
+                }
+                logViewMode = mode;
+                document.querySelectorAll('.view-toggle .toggle-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
                 renderLogs();
-                alert('Admin mode activated! You can now edit content.');
-            } else {
-                alert('Incorrect password!');
+            } catch (err) {
+                console.error('Error in toggleLogView:', err);
+            }
+        }
+
+        function toggleAdmin() {
+            try {
+                if (isAdmin) {
+                    exitAdmin();
+                } else {
+                    const loginModal = document.getElementById('loginModal');
+                    if (loginModal) loginModal.classList.add('active');
+                }
+            } catch (err) {
+                console.error('Error in toggleAdmin:', err);
+            }
+        }
+
+        async function login() {
+            try {
+                const passwordInput = document.getElementById('adminPassword');
+                if (!passwordInput) {
+                    console.warn('Admin password input not found');
+                    return;
+                }
+                const password = passwordInput.value;
+                const hashedInput = await hashPassword(password);
+                
+                if (hashedInput === AUTH_KEY) {
+                    isAdmin = true;
+                    document.body.classList.add('edit-mode');
+                    const adminBar = document.getElementById('adminBar');
+                    if (adminBar) adminBar.classList.add('active');
+                    closeModal();
+                    renderProjects();
+                    renderLogs();
+                    alert('Admin mode activated! You can now edit content.');
+                } else {
+                    alert('Incorrect password!');
+                }
+            } catch (err) {
+                console.error('Error in login:', err);
+                alert('Login failed. Please try again.');
             }
         }
 
         function exitAdmin() {
-            isAdmin = false;
-            document.body.classList.remove('edit-mode');
-            document.getElementById('adminBar').classList.remove('active');
-            renderProjects();
-            renderLogs();
+            try {
+                isAdmin = false;
+                document.body.classList.remove('edit-mode');
+                const adminBar = document.getElementById('adminBar');
+                if (adminBar) adminBar.classList.remove('active');
+                renderProjects();
+                renderLogs();
+            } catch (err) {
+                console.error('Error in exitAdmin:', err);
+            }
         }
-
-        
 
         function closeModal() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-            document.getElementById('adminPassword').value = '';
-        }
-
-        // Edit Project
-        function editProject(id) {
-            const project = projects.find(p => p.id === id);
-            currentEditId = id;
-            currentEditType = 'project';
-            
-            document.getElementById('editModalTitle').textContent = 'Edit Project';
-            document.getElementById('editModalContent').innerHTML = `
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" id="editTitle" value="${project.title}">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="editDescription">${project.description}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Technologies (comma-separated)</label>
-                    <input type="text" id="editTech" value="${project.tech.join(', ')}">
-                </div>
-                <div class="form-group">
-                    <label>Image URL (or upload below)</label>
-                    <input type="text" id="editImage" value="${project.image || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Upload Image</label>
-                    <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
-                    ${project.image ? `<img src="${project.image}" class="image-preview" id="imagePreview">` : '<img id="imagePreview" class="image-preview" style="display:none;">'}
-                </div>
-            `;
-            
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        // Edit Log
-        function editLog(id) {
-            const log = logs.find(l => l.id === id);
-            currentEditId = id;
-            currentEditType = 'log';
-            
-            document.getElementById('editModalTitle').textContent = 'Edit Log Entry';
-            document.getElementById('editModalContent').innerHTML = `
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="text" id="editDate" value="${log.date}">
-                </div>
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" id="editTitle" value="${log.title}">
-                </div>
-                <div class="form-group">
-                    <label>Content</label>
-                    <textarea id="editContent" style="min-height: 150px;">${log.content}</textarea>
-                </div>
-            `;
-            
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        // Save Edit
-        function saveEdit() {
-            if (currentEditType === 'project') {
-                const project = projects.find(p => p.id === currentEditId);
-                project.title = document.getElementById('editTitle').value;
-                project.description = document.getElementById('editDescription').value;
-                project.tech = document.getElementById('editTech').value.split(',').map(t => t.trim());
-                project.image = document.getElementById('editImage').value;
-                renderProjects();
-            } else if (currentEditType === 'log') {
-                const log = logs.find(l => l.id === currentEditId);
-                log.date = document.getElementById('editDate').value;
-                log.title = document.getElementById('editTitle').value;
-                log.content = document.getElementById('editContent').value;
-                renderLogs();
+            try {
+                document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+                const adminPassword = document.getElementById('adminPassword');
+                if (adminPassword) adminPassword.value = '';
+            } catch (err) {
+                console.error('Error in closeModal:', err);
             }
-            
-            closeModal();
-            alert('Changes saved! (Remember to click "Save All Changes" to persist)');
         }
 
-        // Delete Functions
+        function editProject(id) {
+            try {
+                const project = projects.find(p => p.id === id);
+                if (!project) {
+                    console.warn(`Project with ID ${id} not found`);
+                    return;
+                }
+                currentEditId = id;
+                currentEditType = 'project';
+                
+                const editModalTitle = document.getElementById('editModalTitle');
+                const editModalContent = document.getElementById('editModalContent');
+                if (!editModalTitle || !editModalContent) {
+                    console.warn('Edit modal elements not found');
+                    return;
+                }
+                
+                editModalTitle.textContent = 'Edit Project';
+                editModalContent.innerHTML = `
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="editTitle" value="${project.title}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="editDescription">${project.description}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Technologies (comma-separated)</label>
+                        <input type="text" id="editTech" value="${project.tech.join(', ')}">
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL (or upload below)</label>
+                        <input type="text" id="editImage" value="${project.image || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Image</label>
+                        <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+                        ${project.image ? `<img src="${project.image}" class="image-preview" id="imagePreview">` : '<img id="imagePreview" class="image-preview" style="display:none;">'}
+                    </div>
+                `;
+                
+                const editModal = document.getElementById('editModal');
+                if (editModal) editModal.classList.add('active');
+            } catch (err) {
+                console.error('Error in editProject:', err);
+            }
+        }
+
+        function editLog(id) {
+            try {
+                const log = logs.find(l => l.id === id);
+                if (!log) {
+                    console.warn(`Log with ID ${id} not found`);
+                    return;
+                }
+                currentEditId = id;
+                currentEditType = 'log';
+                
+                const editModalTitle = document.getElementById('editModalTitle');
+                const editModalContent = document.getElementById('editModalContent');
+                if (!editModalTitle || !editModalContent) {
+                    console.warn('Edit modal elements not found');
+                    return;
+                }
+                
+                editModalTitle.textContent = 'Edit Log Entry';
+                editModalContent.innerHTML = `
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="text" id="editDate" value="${log.date}">
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="editTitle" value="${log.title}">
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea id="editContent" style="min-height: 150px;">${log.content}</textarea>
+                    </div>
+                `;
+                
+                const editModal = document.getElementById('editModal');
+                if (editModal) editModal.classList.add('active');
+            } catch (err) {
+                console.error('Error in editLog:', err);
+            }
+        }
+
+        function saveEdit() {
+            try {
+                if (currentEditType === 'project') {
+                    const project = projects.find(p => p.id === currentEditId);
+                    if (!project) {
+                        console.warn(`Project with ID ${currentEditId} not found`);
+                        return;
+                    }
+                    const editTitle = document.getElementById('editTitle');
+                    const editDescription = document.getElementById('editDescription');
+                    const editTech = document.getElementById('editTech');
+                    const editImage = document.getElementById('editImage');
+                    if (!editTitle || !editDescription || !editTech || !editImage) {
+                        console.warn('Edit form elements not found');
+                        return;
+                    }
+                    project.title = editTitle.value;
+                    project.description = editDescription.value;
+                    project.tech = editTech.value.split(',').map(t => t.trim());
+                    project.image = editImage.value;
+                    renderProjects();
+                } else if (currentEditType === 'log') {
+                    const log = logs.find(l => l.id === currentEditId);
+                    if (!log) {
+                        console.warn(`Log with ID ${currentEditId} not found`);
+                        return;
+                    }
+                    const editDate = document.getElementById('editDate');
+                    const editTitle = document.getElementById('editTitle');
+                    const editContent = document.getElementById('editContent');
+                    if (!editDate || !editTitle || !editContent) {
+                        console.warn('Edit form elements not found');
+                        return;
+                    }
+                    log.date = editDate.value;
+                    log.title = editTitle.value;
+                    log.content = editContent.value;
+                    renderLogs();
+                }
+                
+                closeModal();
+                alert('Changes saved locally! Remember: these changes are temporary until you add a backend.');
+            } catch (err) {
+                console.error('Error in saveEdit:', err);
+                alert('Failed to save changes. Please try again.');
+            }
+        }
+
         function deleteProject(id) {
-            if (confirm('Are you sure you want to delete this project?')) {
-                projects = projects.filter(p => p.id !== id);
-                renderProjects();
+            try {
+                if (confirm('Are you sure you want to delete this project?')) {
+                    projects = projects.filter(p => p.id !== id);
+                    renderProjects();
+                }
+            } catch (err) {
+                console.error('Error in deleteProject:', err);
             }
         }
 
         function deleteLog(id) {
-            if (confirm('Are you sure you want to delete this log entry?')) {
-                logs = logs.filter(l => l.id !== id);
-                renderLogs();
+            try {
+                if (confirm('Are you sure you want to delete this log entry?')) {
+                    logs = logs.filter(l => l.id !== id);
+                    renderLogs();
+                }
+            } catch (err) {
+                console.error('Error in deleteLog:', err);
             }
         }
 
-        // Add New Functions
         function addNewProject() {
-            const newId = Math.max(...projects.map(p => p.id), 0) + 1;
-            projects.push({
-                id: newId,
-                title: "New Project",
-                description: "Project description here",
-                tech: ["Technology1", "Technology2"],
-                links: [
-                    { text: "View Details", url: "#" }
-                ],
-                image: ""
-            });
-            renderProjects();
-            editProject(newId);
+            try {
+                const newId = Math.max(...projects.map(p => p.id), 0) + 1;
+                projects.push({
+                    id: newId,
+                    title: "New Project",
+                    description: "Project description here",
+                    tech: ["Technology1", "Technology2"],
+                    links: [
+                        { text: "View Details", url: "#" }
+                    ],
+                    image: ""
+                });
+                renderProjects();
+                editProject(newId);
+            } catch (err) {
+                console.error('Error in addNewProject:', err);
+            }
         }
 
         function addNewLog() {
-            const newId = Math.max(...logs.map(l => l.id), 0) + 1;
-            const today = new Date().toLocaleDateString('en-US', { 
-                month: 'long', 
-                day: 'numeric', 
-                year: 'numeric' 
-            });
-            
-            logs.unshift({
-                id: newId,
-                date: today,
-                title: "New Log Entry",
-                content: "Write your log entry content here..."
-            });
-            renderLogs();
-            editLog(newId);
-        }
-
-        // Image Upload Handler
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageUrl = e.target.result;
-                    document.getElementById('editImage').value = imageUrl;
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = imageUrl;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+            try {
+                const newId = Math.max(...logs.map(l => l.id), 0) + 1;
+                const today = new Date().toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                
+                logs.unshift({
+                    id: newId,
+                    date: today,
+                    title: "New Log Entry",
+                    content: "Write your log entry content here..."
+                });
+                renderLogs();
+                editLog(newId);
+            } catch (err) {
+                console.error('Error in addNewLog:', err);
             }
         }
 
-        // Save All Changes (This would connect to a backend in production)
-        function saveChanges() {
-            // In a real app, this would send data to a server
-            const data = {
-                projects: projects,
-                logs: logs
-            };
-            
-            // For now, we'll just show the data in console
-            console.log('Saving data:', data);
-            
-            // Simulate save
-            alert('All changes saved successfully!\n\n(In production, this would save to a database)');
+        function handleImageUpload(event) {
+            try {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageUrl = e.target.result;
+                        const editImage = document.getElementById('editImage');
+                        const imagePreview = document.getElementById('imagePreview');
+                        if (editImage && imagePreview) {
+                            editImage.value = imageUrl;
+                            imagePreview.src = imageUrl;
+                            imagePreview.style.display = 'block';
+                        } else {
+                            console.warn('Image upload elements not found');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } catch (err) {
+                console.error('Error in handleImageUpload:', err);
+            }
         }
 
-        // Initialize on load
-        init();
+        function saveChanges() {
+            try {
+                const data = {
+                    projects: projects,
+                    logs: logs
+                };
+                
+                console.log('Data to save:', data);
+                alert('⚠️ LOCAL SAVE ONLY\n\nYour changes are saved in your browser, but will be lost when you refresh.\n\nTo persist changes permanently, you need to:\n1. Set up a backend (Node.js/Express)\n2. Use a database (MongoDB, PostgreSQL)\n3. Deploy to Netlify/Vercel with serverless functions\n\nWould you like help setting this up?');
+            } catch (err) {
+                console.error('Error in saveChanges:', err);
+                alert('Failed to save changes. Please try again.');
+            }
+        }
+
+        // Initialize after DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                renderProjects();
+                renderLogs();
+            } catch (err) {
+                console.error('Error in initialization:', err);
+            }
+        });
     </script>
 </body>
 </html>

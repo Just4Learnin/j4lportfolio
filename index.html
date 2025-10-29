@@ -63,6 +63,8 @@
             border: 1px solid var(--border);
             max-width: 400px;
             width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .modal-content h2 {
@@ -128,7 +130,8 @@
         }
 
         .edit-mode .project-card,
-        .edit-mode .log-entry {
+        .edit-mode .log-entry,
+        .edit-mode .skill-category {
             position: relative;
             padding-top: 3rem;
         }
@@ -139,6 +142,7 @@
             top: 1rem;
             right: 1rem;
             gap: 0.5rem;
+            z-index: 10;
         }
 
         .edit-mode .edit-controls {
@@ -240,7 +244,6 @@
         }
 
         nav {
-            /* Removed display: flex; justify-content: space-between; align-items: center; and padding: 1rem 0; from here */
         }
 
         .logo {
@@ -362,6 +365,52 @@
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
 
+        .about-dropdown-content {
+            display: none;
+            margin-top: 1rem;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .about-dropdown-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .nav-item.dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-card);
+            min-width: 250px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            right: 0;
+            top: 100%;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .dropdown-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hero-visual {
             flex: 1;
             display: flex;
@@ -403,13 +452,13 @@
         }
 
         .projects {
-            padding: 5rem 0 10rem 0; /* Increased bottom padding for more section gap */
+            padding: 3rem 0 5rem 0;
             background: var(--bg-secondary);
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 600px;
+            min-height: 400px;
         }
 
         .section-title {
@@ -420,7 +469,26 @@
             color: var(--text-primary);
         }
 
-        /* Smooth Scroll-Snap Carousels */
+        .section-collapsible-content {
+            display: none;
+            overflow: hidden;
+        }
+
+        .section-collapsible-content.active {
+            display: block;
+            padding-top: 1rem;
+        }
+
+        /* Reduced spacing when sections are collapsed */
+        .projects:has(.section-collapsible-content:not(.active)) {
+            padding: 2rem 0;
+            min-height: auto;
+        }
+
+        .projects:has(.section-collapsible-content:not(.active)) .section-title {
+            margin-bottom: 0;
+        }
+
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -454,10 +522,9 @@
             scroll-snap-align: center;
             width: clamp(250px, 30vw, 400px);
             padding: clamp(1rem, 2vw, 2rem);
-            min-height: 450px; /* Uniform height for consistency */
+            min-height: 450px;
         }
 
-        /* Responsive Breakpoints */
         @media (max-width: 479px) {
             .carousel-wrapper { height: 450px; }
             .carousel-item { width: 90vw; }
@@ -483,7 +550,6 @@
             .carousel-item { width: 400px; }
         }
 
-        /* Navigation Arrows */
         .carousel-nav {
             position: absolute;
             top: 50%;
@@ -524,8 +590,8 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            padding: 2.5rem; /* Increased for better text breathing room */
-            min-height: 450px; /* Uniform height for all entries */
+            padding: 2.5rem;
+            min-height: 450px;
         }
 
         .project-card::before {
@@ -614,8 +680,17 @@
         }
 
         .dev-log {
-            padding: 5rem 0;
+            padding: 3rem 0 5rem 0;
             position: relative;
+        }
+
+        /* Reduced spacing when dev-log is collapsed */
+        .dev-log:has(.section-collapsible-content:not(.active)) {
+            padding: 2rem 0;
+        }
+
+        .dev-log:has(.section-collapsible-content:not(.active)) .section-title {
+            margin-bottom: 0;
         }
 
         .view-toggle {
@@ -674,7 +749,7 @@
             margin: 0 auto;
             display: grid;
             gap: 2rem;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Horizontal grid for list */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
 
         .log-carousel-wrapper {
@@ -683,6 +758,103 @@
 
         .log-carousel-wrapper.active {
             display: block;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+            padding-right: 20px;
+            position: relative;
+        }
+
+        .collapsible-header::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .collapsible-header.active::after {
+            content: '-';
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .collapsible-content {
+            display: none;
+            overflow: hidden;
+            padding-top: 1rem;
+        }
+
+        .collapsible-content.active {
+            display: block;
+        }
+
+        .section-collapsible-content {
+            display: none;
+            overflow: hidden;
+        }
+
+        .section-collapsible-content.active {
+            display: block;
+        }
+
+        .skill-category ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .skill-category li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .skill-category li:last-child {
+            border-bottom: none;
+        }
+
+        .edit-mode .skill-category li {
+            position: relative;
+            padding-right: 120px;
+        }
+
+        .skill-item-controls {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            gap: 0.5rem;
+        }
+
+        .edit-mode .skill-item-controls {
+            display: flex;
+        }
+
+        .skill-item-controls .edit-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
         }
 
         footer {
@@ -788,20 +960,17 @@
             }
         }
 
-        /* Dev Log Spacing Fix */
-
-        /* Cube container */
         .cube-loader {
             position: relative;
-            --cube-size: clamp(150px, 25vw, 250px); /* Responsive size */
+            --cube-size: clamp(150px, 25vw, 250px);
             width: var(--cube-size);
             height: var(--cube-size);
             transform-style: preserve-3d;
             transform: rotateX(-30deg);
             animation: animate 6s linear infinite;
+            perspective: 1000px;
         }
 
-        /* Rotation animation - spins opposite direction */
         @keyframes animate {
             0% {
                 transform: rotateX(-30deg) rotateY(0deg);
@@ -811,7 +980,6 @@
             }
         }
 
-        /* Wrapper holds all cube faces */
         .cube-wrapper {
             position: absolute;
             width: 100%;
@@ -819,37 +987,56 @@
             transform-style: preserve-3d;
         }
 
-        /* Each cube face styled as a terminal window */
         .cube-span {
             position: absolute;
-            width: var(--cube-size);
-            height: var(--cube-size);
-            padding: 15px;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
             box-sizing: border-box;
-            background: #0a0a0a; /* black background */
-            color: #33ff33; /* bright terminal green text */
+            background: #0a0a0a;
+            color: #33ff33;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
+            font-size: clamp(8px, 1.5vw, 12px);
             font-weight: 600;
             line-height: 1.3;
-            white-space: pre-wrap; /* preserve line breaks */
-            border: 1px solid #33ff33; /* green border */
-            box-shadow: 0 0 15px #33ff33; /* green glow */
+            white-space: pre-wrap;
+            border: 1px solid #33ff33;
+            box-shadow: 0 0 15px #33ff33;
             user-select: none;
             backface-visibility: hidden;
             transform: rotateY(calc(90deg * var(--i))) translateZ(calc(var(--cube-size) / 2));
         }
 
-        /* The top face - black with green glow */
         .cube-top {
             position: absolute;
-            width: var(--cube-size);
-            height: var(--cube-size);
+            width: 100%;
+            height: 100%;
             background: #0a0a0a;
             border: 1px solid #33ff33;
             box-shadow: 0 0 20px #33ff33;
             transform: rotateX(90deg) translateZ(calc(var(--cube-size) / 2));
             transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        @media (max-width: 767px) {
+            .cube-loader {
+                --cube-size: 120px;
+            }
+            
+            .cube-span {
+                font-size: 8px;
+                padding: 8px;
+            }
+        }
+
+        .skill-list-items {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .skill-list-items li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -888,12 +1075,20 @@
             <a href="#home" class="logo">Just4Learnin</a>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#about" class="nav-link" id="navAboutDropdownBtn">About</a>
+                        <div id="navAboutDropdownContent" class="dropdown-content">
+                            <p>
+                                A results-oriented IT professional and full-stack enthusiast with 6+ years of leadership in technical support, adept at optimizing complex systems and driving efficiency. I leverage a robust foundation in Python, JavaScript, and modern web technologies to architect innovative solutions, from responsive 3D web interfaces to scalable AI-driven personal assistants. My passion for continuous learning, coupled with proven problem-solving and empathetic communication skills, positions me to deliver high-impact contributions in dynamic engineering environments.
+                            </p>
+                        </div>
+                    </li>
                     <li><a href="#skills">Skills</a></li>
                     <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="https://github.com/Just4Learnin" target="_blank">Contact</a></li>
                 </ul>
             </nav>
+        </div>
     </header>
 
     <main>
@@ -941,34 +1136,48 @@ Linux terminal-cube 5.15.0
             </div>
         </section>
 
+        <section id="skills" class="dev-log">
+            <div class="container">
+                <h2 class="section-title collapsible-header">Skills</h2>
+                <div class="section-collapsible-content">
+                    <div class="skills-grid" id="skillsGrid"></div>
+                    <button class="btn add-new-btn" onclick="addNewSkillCategory()">+ Add New Skill Category</button>
+                </div>
+            </div>
+        </section>
+
         <section id="projects" class="projects">
             <div class="container">
-                <h2 class="section-title">Featured Projects</h2>
-                <div class="carousel-wrapper" id="projectsCarouselWrapper">
-                    <button class="carousel-nav prev" onclick="nextSlide('projects', -1)">&lt;</button>
-                    <button class="carousel-nav next" onclick="nextSlide('projects', 1)">&gt;</button>
-                    <div class="carousel projects-carousel" id="projectsCarousel"></div>
+                <h2 class="section-title collapsible-header">Featured Projects</h2>
+                <div class="section-collapsible-content">
+                    <div class="carousel-wrapper" id="projectsCarouselWrapper">
+                        <button class="carousel-nav prev" onclick="nextSlide('projects', -1)">&lt;</button>
+                        <button class="carousel-nav next" onclick="nextSlide('projects', 1)">&gt;</button>
+                        <div class="carousel projects-carousel" id="projectsCarousel"></div>
+                    </div>
+                    <button class="btn add-new-btn" onclick="addNewProject()" style="margin-top: 2rem;">+ Add New Project</button>
                 </div>
-                <button class="btn add-new-btn" onclick="addNewProject()" style="margin-top: 2rem;">+ Add New Project</button>
             </div>
         </section>
 
         <section id="devlog" class="dev-log">
             <div class="container">
-                <h2 class="section-title">Development Log</h2>
-                <div class="view-toggle">
-                    <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">☰</button>
-                    <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">⇄</button>
-                </div>
-                <div id="logContainer">
-                    <div class="log-entries" id="logEntries"></div>
-                    <div class="log-carousel-wrapper" id="logCarouselWrapper">
-                        <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">&lt;</button>
-                        <button class="carousel-nav next" onclick="nextSlide('logs', 1)">&gt;</button>
-                        <div class="carousel log-carousel" id="logCarousel"></div>
+                <h2 class="section-title collapsible-header">Development Log</h2>
+                <div class="section-collapsible-content">
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">☰</button>
+                        <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">⇄</button>
                     </div>
+                    <div id="logContainer">
+                        <div class="log-entries" id="logEntries"></div>
+                        <div class="log-carousel-wrapper" id="logCarouselWrapper">
+                            <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">&lt;</button>
+                            <button class="carousel-nav next" onclick="nextSlide('logs', 1)">&gt;</button>
+                            <div class="carousel log-carousel" id="logCarousel"></div>
+                        </div>
+                    </div>
+                    <button class="btn add-new-btn" onclick="addNewLog()">+ Add New Log Entry</button>
                 </div>
-                <button class="btn add-new-btn" onclick="addNewLog()">+ Add New Log Entry</button>
             </div>
         </section>
     </main>
@@ -1004,7 +1213,6 @@ Linux terminal-cube 5.15.0
             }
         }
 
-        // Keyboard shortcut listener (Ctrl+L)
         document.addEventListener('keydown', function(event) {
             if (event.ctrlKey && event.key === 'l') {
                 event.preventDefault();
@@ -1015,6 +1223,7 @@ Linux terminal-cube 5.15.0
         let isAdmin = false;
         let currentEditId = null;
         let currentEditType = null;
+        let currentEditIndex = null;
         let logViewMode = 'list';
 
         let projects = [
@@ -1091,7 +1300,118 @@ Linux terminal-cube 5.15.0
             }
         ];
 
-        // Smooth Carousel Functions
+        let skills = [
+            {
+                id: 1,
+                category: "Technical Support & Systems",
+                items: [
+                    "Technical Troubleshooting & Support",
+                    "System Administration (macOS, Windows, Linux)",
+                    "Network Configuration & Connectivity",
+                    "Hardware / Software Diagnostics",
+                    "IT Documentation & Process Improvement"
+                ]
+            },
+            {
+                id: 2,
+                category: "Cloud & Infrastructure",
+                items: [
+                    "AWS (in progress)",
+                    "Azure (in progress)",
+                    "CompTIA Network+ (goal)",
+                    "AWS Cloud Practitioner (goal)"
+                ]
+            },
+            {
+                id: 3,
+                category: "Programming & Web Development",
+                items: [
+                    "Python",
+                    "JavaScript",
+                    "HTML5",
+                    "CSS3",
+                    "Responsive Design",
+                    "UI/UX Principles",
+                    "DOM Manipulation",
+                    "Event Handling",
+                    "Real-time Updates"
+                ]
+            },
+            {
+                id: 4,
+                category: "AI/ML & Concepts",
+                items: [
+                    "Large Language Models (LLMs)",
+                    "LLM Inference (Ollama)",
+                    "Speech-to-Text (STT)",
+                    "Text-to-Speech (TTS)",
+                    "CLI Development"
+                ]
+            },
+            {
+                id: 5,
+                category: "CSS Techniques",
+                items: [
+                    "Flexbox",
+                    "3D Transforms",
+                    "CSS Variables",
+                    "Media Queries"
+                ]
+            },
+            {
+                id: 6,
+                category: "Web APIs",
+                items: [
+                    "Web Audio API",
+                    "File API",
+                    "Local Storage"
+                ]
+            },
+            {
+                id: 7,
+                category: "Tools & Ecosystems",
+                items: [
+                    "Conda",
+                    "pip",
+                    "git",
+                    "nltk",
+                    "PyAudio",
+                    "webrtcvad",
+                    "pyttsx3",
+                    "SpeechRecognition"
+                ]
+            },
+            {
+                id: 8,
+                category: "Engineering Practices",
+                items: [
+                    "Problem Solving",
+                    "Debugging",
+                    "Troubleshooting",
+                    "Dependency Management",
+                    "Asynchronous Programming",
+                    "Performance Optimization",
+                    "Technical Documentation",
+                    "Agile Methodologies"
+                ]
+            },
+            {
+                id: 9,
+                category: "Professional & Soft Skills",
+                items: [
+                    "Team Leadership",
+                    "Mentoring",
+                    "Cross-functional Communication",
+                    "Customer Experience Optimization",
+                    "Analytical Thinking",
+                    "Attention to Detail",
+                    "Continuous Learning",
+                    "Adaptability",
+                    "Resourcefulness"
+                ]
+            }
+        ];
+
         let projectInterval, logInterval;
         const PROJECT_PAUSE = 4000;
         const LOG_PAUSE = 6000;
@@ -1146,7 +1466,6 @@ Linux terminal-cube 5.15.0
             }
         }
 
-        // Event listeners for pause/resume
         function addInteractionListeners(wrapperId, type, pause) {
             try {
                 const wrapper = document.getElementById(wrapperId);
@@ -1193,6 +1512,49 @@ Linux terminal-cube 5.15.0
                 projectInterval = setupAutoPlay('projectsCarousel', PROJECT_PAUSE);
             } catch (err) {
                 console.error('Error rendering projects:', err);
+            }
+        }
+
+        function renderSkills() {
+            try {
+                const skillsGrid = document.getElementById('skillsGrid');
+                if (!skillsGrid) {
+                    console.warn('Skills grid not found');
+                    return;
+                }
+                skillsGrid.innerHTML = skills.map(category => `
+                    <div class="skill-category" data-id="${category.id}">
+                        ${isAdmin ? `
+                        <div class="edit-controls">
+                            <button class="edit-btn" onclick="editSkillCategory(${category.id})">Edit</button>
+                            <button class="edit-btn delete-btn" onclick="deleteSkillCategory(${category.id})">Delete</button>
+                        </div>
+                        ` : ''}
+                        <h3 class="collapsible-header" onclick="toggleCollapsible(this)">
+                            ${category.category}
+                        </h3>
+                        <div class="collapsible-content">
+                            <ul class="skill-list-items">
+                                ${category.items.map((item, index) => `
+                                    <li>
+                                        ${item}
+                                        ${isAdmin ? `
+                                        <div class="skill-item-controls">
+                                            <button class="edit-btn" onclick="editSkillItem(${category.id}, ${index})">Edit</button>
+                                            <button class="edit-btn delete-btn" onclick="deleteSkillItem(${category.id}, ${index})">Delete</button>
+                                        </div>
+                                        ` : ''}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            ${isAdmin ? `
+                            <button class="btn" style="margin-top: 1rem; padding: 0.5rem 1rem;" onclick="addNewSkillItem(${category.id})">+ Add Skill</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Error rendering skills:', err);
             }
         }
 
@@ -1306,6 +1668,7 @@ Linux terminal-cube 5.15.0
                     if (adminBar) adminBar.classList.add('active');
                     closeModal();
                     renderProjects();
+                    renderSkills();
                     renderLogs();
                     alert('Admin mode activated! You can now edit content.');
                 } else {
@@ -1324,6 +1687,7 @@ Linux terminal-cube 5.15.0
                 const adminBar = document.getElementById('adminBar');
                 if (adminBar) adminBar.classList.remove('active');
                 renderProjects();
+                renderSkills();
                 renderLogs();
             } catch (err) {
                 console.error('Error in exitAdmin:', err);
@@ -1340,6 +1704,128 @@ Linux terminal-cube 5.15.0
             }
         }
 
+        // SKILLS EDITING FUNCTIONS
+        function editSkillCategory(id) {
+            try {
+                const category = skills.find(s => s.id === id);
+                if (!category) {
+                    console.warn(`Skill category with ID ${id} not found`);
+                    return;
+                }
+                currentEditId = id;
+                currentEditType = 'skill-category';
+                
+                const editModalTitle = document.getElementById('editModalTitle');
+                const editModalContent = document.getElementById('editModalContent');
+                if (!editModalTitle || !editModalContent) {
+                    console.warn('Edit modal elements not found');
+                    return;
+                }
+                
+                editModalTitle.textContent = 'Edit Skill Category';
+                editModalContent.innerHTML = `
+                    <div class="form-group">
+                        <label>Category Name</label>
+                        <input type="text" id="editCategoryName" value="${category.category}">
+                    </div>
+                `;
+                
+                const editModal = document.getElementById('editModal');
+                if (editModal) editModal.classList.add('active');
+            } catch (err) {
+                console.error('Error in editSkillCategory:', err);
+            }
+        }
+
+        function deleteSkillCategory(id) {
+            try {
+                if (confirm('Are you sure you want to delete this skill category?')) {
+                    skills = skills.filter(s => s.id !== id);
+                    renderSkills();
+                }
+            } catch (err) {
+                console.error('Error in deleteSkillCategory:', err);
+            }
+        }
+
+        function addNewSkillCategory() {
+            try {
+                const newId = Math.max(...skills.map(s => s.id), 0) + 1;
+                skills.push({
+                    id: newId,
+                    category: "New Skill Category",
+                    items: []
+                });
+                renderSkills();
+                editSkillCategory(newId);
+            } catch (err) {
+                console.error('Error in addNewSkillCategory:', err);
+            }
+        }
+
+        function editSkillItem(categoryId, itemIndex) {
+            try {
+                const category = skills.find(s => s.id === categoryId);
+                if (!category || !category.items[itemIndex]) {
+                    console.warn(`Skill item not found`);
+                    return;
+                }
+                currentEditId = categoryId;
+                currentEditIndex = itemIndex;
+                currentEditType = 'skill-item';
+                
+                const editModalTitle = document.getElementById('editModalTitle');
+                const editModalContent = document.getElementById('editModalContent');
+                if (!editModalTitle || !editModalContent) {
+                    console.warn('Edit modal elements not found');
+                    return;
+                }
+                
+                editModalTitle.textContent = 'Edit Skill Item';
+                editModalContent.innerHTML = `
+                    <div class="form-group">
+                        <label>Skill Name</label>
+                        <input type="text" id="editSkillItem" value="${category.items[itemIndex]}">
+                    </div>
+                `;
+                
+                const editModal = document.getElementById('editModal');
+                if (editModal) editModal.classList.add('active');
+            } catch (err) {
+                console.error('Error in editSkillItem:', err);
+            }
+        }
+
+        function deleteSkillItem(categoryId, itemIndex) {
+            try {
+                if (confirm('Are you sure you want to delete this skill?')) {
+                    const category = skills.find(s => s.id === categoryId);
+                    if (category) {
+                        category.items.splice(itemIndex, 1);
+                        renderSkills();
+                    }
+                }
+            } catch (err) {
+                console.error('Error in deleteSkillItem:', err);
+            }
+        }
+
+        function addNewSkillItem(categoryId) {
+            try {
+                const category = skills.find(s => s.id === categoryId);
+                if (!category) {
+                    console.warn(`Skill category with ID ${categoryId} not found`);
+                    return;
+                }
+                category.items.push("New Skill");
+                renderSkills();
+                editSkillItem(categoryId, category.items.length - 1);
+            } catch (err) {
+                console.error('Error in addNewSkillItem:', err);
+            }
+        }
+
+        // PROJECT EDITING FUNCTIONS
         function editProject(id) {
             try {
                 const project = projects.find(p => p.id === id);
@@ -1389,6 +1875,38 @@ Linux terminal-cube 5.15.0
             }
         }
 
+        function deleteProject(id) {
+            try {
+                if (confirm('Are you sure you want to delete this project?')) {
+                    projects = projects.filter(p => p.id !== id);
+                    renderProjects();
+                }
+            } catch (err) {
+                console.error('Error in deleteProject:', err);
+            }
+        }
+
+        function addNewProject() {
+            try {
+                const newId = Math.max(...projects.map(p => p.id), 0) + 1;
+                projects.push({
+                    id: newId,
+                    title: "New Project",
+                    description: "Project description here",
+                    tech: ["Technology1", "Technology2"],
+                    links: [
+                        { text: "View Details", url: "#" }
+                    ],
+                    image: ""
+                });
+                renderProjects();
+                editProject(newId);
+            } catch (err) {
+                console.error('Error in addNewProject:', err);
+            }
+        }
+
+        // LOG EDITING FUNCTIONS
         function editLog(id) {
             try {
                 const log = logs.find(l => l.id === id);
@@ -1429,6 +1947,40 @@ Linux terminal-cube 5.15.0
             }
         }
 
+        function deleteLog(id) {
+            try {
+                if (confirm('Are you sure you want to delete this log entry?')) {
+                    logs = logs.filter(l => l.id !== id);
+                    renderLogs();
+                }
+            } catch (err) {
+                console.error('Error in deleteLog:', err);
+            }
+        }
+
+        function addNewLog() {
+            try {
+                const newId = Math.max(...logs.map(l => l.id), 0) + 1;
+                const today = new Date().toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                
+                logs.unshift({
+                    id: newId,
+                    date: today,
+                    title: "New Log Entry",
+                    content: "Write your log entry content here..."
+                });
+                renderLogs();
+                editLog(newId);
+            } catch (err) {
+                console.error('Error in addNewLog:', err);
+            }
+        }
+
+        // SAVE EDIT FUNCTION (handles all types)
         function saveEdit() {
             try {
                 if (currentEditType === 'project') {
@@ -1467,6 +2019,32 @@ Linux terminal-cube 5.15.0
                     log.title = editTitle.value;
                     log.content = editContent.value;
                     renderLogs();
+                } else if (currentEditType === 'skill-category') {
+                    const category = skills.find(s => s.id === currentEditId);
+                    if (!category) {
+                        console.warn(`Skill category with ID ${currentEditId} not found`);
+                        return;
+                    }
+                    const editCategoryName = document.getElementById('editCategoryName');
+                    if (!editCategoryName) {
+                        console.warn('Edit form elements not found');
+                        return;
+                    }
+                    category.category = editCategoryName.value;
+                    renderSkills();
+                } else if (currentEditType === 'skill-item') {
+                    const category = skills.find(s => s.id === currentEditId);
+                    if (!category) {
+                        console.warn(`Skill category with ID ${currentEditId} not found`);
+                        return;
+                    }
+                    const editSkillItem = document.getElementById('editSkillItem');
+                    if (!editSkillItem) {
+                        console.warn('Edit form elements not found');
+                        return;
+                    }
+                    category.items[currentEditIndex] = editSkillItem.value;
+                    renderSkills();
                 }
                 
                 closeModal();
@@ -1474,70 +2052,6 @@ Linux terminal-cube 5.15.0
             } catch (err) {
                 console.error('Error in saveEdit:', err);
                 alert('Failed to save changes. Please try again.');
-            }
-        }
-
-        function deleteProject(id) {
-            try {
-                if (confirm('Are you sure you want to delete this project?')) {
-                    projects = projects.filter(p => p.id !== id);
-                    renderProjects();
-                }
-            } catch (err) {
-                console.error('Error in deleteProject:', err);
-            }
-        }
-
-        function deleteLog(id) {
-            try {
-                if (confirm('Are you sure you want to delete this log entry?')) {
-                    logs = logs.filter(l => l.id !== id);
-                    renderLogs();
-                }
-            } catch (err) {
-                console.error('Error in deleteLog:', err);
-            }
-        }
-
-        function addNewProject() {
-            try {
-                const newId = Math.max(...projects.map(p => p.id), 0) + 1;
-                projects.push({
-                    id: newId,
-                    title: "New Project",
-                    description: "Project description here",
-                    tech: ["Technology1", "Technology2"],
-                    links: [
-                        { text: "View Details", url: "#" }
-                    ],
-                    image: ""
-                });
-                renderProjects();
-                editProject(newId);
-            } catch (err) {
-                console.error('Error in addNewProject:', err);
-            }
-        }
-
-        function addNewLog() {
-            try {
-                const newId = Math.max(...logs.map(l => l.id), 0) + 1;
-                const today = new Date().toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
-                });
-                
-                logs.unshift({
-                    id: newId,
-                    date: today,
-                    title: "New Log Entry",
-                    content: "Write your log entry content here..."
-                });
-                renderLogs();
-                editLog(newId);
-            } catch (err) {
-                console.error('Error in addNewLog:', err);
             }
         }
 
@@ -1569,7 +2083,8 @@ Linux terminal-cube 5.15.0
             try {
                 const data = {
                     projects: projects,
-                    logs: logs
+                    logs: logs,
+                    skills: skills
                 };
                 
                 console.log('Data to save:', data);
@@ -1580,30 +2095,80 @@ Linux terminal-cube 5.15.0
             }
         }
 
-        // Initialize after DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', () => {
+        function toggleCollapsible(header) {
             try {
-                renderProjects();
-                renderLogs();
-                updateCubeDate(); // Initial call to display date immediately
+                const content = header.nextElementSibling;
+                if (!content) return;
+                
+                if (content.classList.contains('active')) {
+                    content.classList.remove('active');
+                    header.classList.remove('active');
+                } else {
+                    content.classList.add('active');
+                    header.classList.add('active');
+                }
             } catch (err) {
-                console.error('Error in initialization:', err);
+                console.error('Error in toggleCollapsible:', err);
             }
-        });
+        }
 
         function updateCubeDate() {
             const dateElement = document.getElementById('cube-date');
             if (dateElement) {
                 const now = new Date();
-                // Format the date as "Day Mon DD HH:MM:SS YYYY"
                 const options = { weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', year: 'numeric', hour12: false };
                 const formattedDate = now.toLocaleString('en-US', options).replace(/,/g, '');
                 dateElement.textContent = `$ date\n${formattedDate}`;
             }
         }
 
-        // Update every second
         setInterval(updateCubeDate, 1000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                renderProjects();
+                renderSkills();
+                renderLogs();
+                updateCubeDate();
+
+                const navAboutBtn = document.getElementById('navAboutDropdownBtn');
+                const navAboutContent = document.getElementById('navAboutDropdownContent');
+
+                if (navAboutBtn && navAboutContent) {
+                    navAboutBtn.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        if (navAboutContent.style.display === 'block') {
+                            navAboutContent.style.display = 'none';
+                        } else {
+                            navAboutContent.style.display = 'block';
+                        }
+                    });
+
+                    document.addEventListener('click', (event) => {
+                        if (!navAboutBtn.contains(event.target) && !navAboutContent.contains(event.target)) {
+                            navAboutContent.style.display = 'none';
+                        }
+                    });
+                }
+
+                const sectionCollapsibleHeaders = document.querySelectorAll('h2.collapsible-header');
+                sectionCollapsibleHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const content = header.nextElementSibling;
+                        if (content.classList.contains('active')) {
+                            content.classList.remove('active');
+                            header.classList.remove('active');
+                        } else {
+                            content.classList.add('active');
+                            header.classList.add('active');
+                        }
+                    });
+                });
+
+            } catch (err) {
+                console.error('Error in initialization:', err);
+            }
+        });
     </script>
 </body>
 </html>

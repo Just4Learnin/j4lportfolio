@@ -793,8 +793,9 @@
         /* Cube container */
         .cube-loader {
             position: relative;
-            width: 200px;
-            height: 200px;
+            --cube-size: clamp(150px, 25vw, 250px); /* Responsive size */
+            width: var(--cube-size);
+            height: var(--cube-size);
             transform-style: preserve-3d;
             transform: rotateX(-30deg);
             animation: animate 6s linear infinite;
@@ -821,8 +822,8 @@
         /* Each cube face styled as a terminal window */
         .cube-span {
             position: absolute;
-            width: 200px;
-            height: 200px;
+            width: var(--cube-size);
+            height: var(--cube-size);
             padding: 15px;
             box-sizing: border-box;
             background: #0a0a0a; /* black background */
@@ -836,18 +837,18 @@
             box-shadow: 0 0 15px #33ff33; /* green glow */
             user-select: none;
             backface-visibility: hidden;
-            transform: rotateY(calc(90deg * var(--i))) translateZ(100px);
+            transform: rotateY(calc(90deg * var(--i))) translateZ(calc(var(--cube-size) / 2));
         }
 
         /* The top face - black with green glow */
         .cube-top {
             position: absolute;
-            width: 200px;
-            height: 200px;
+            width: var(--cube-size);
+            height: var(--cube-size);
             background: #0a0a0a;
             border: 1px solid #33ff33;
             box-shadow: 0 0 20px #33ff33;
-            transform: rotateX(90deg) translateZ(100px);
+            transform: rotateX(90deg) translateZ(calc(var(--cube-size) / 2));
             transform-style: preserve-3d;
         }
     </style>
@@ -956,8 +957,8 @@ Linux terminal-cube 5.15.0
             <div class="container">
                 <h2 class="section-title">Development Log</h2>
                 <div class="view-toggle">
-                    <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">📋</button>
-                    <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">🔄</button>
+                    <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">☰</button>
+                    <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">⇄</button>
                 </div>
                 <div id="logContainer">
                     <div class="log-entries" id="logEntries"></div>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3D Terminal Cube</title>
+<style>
+  /* Body styling to center the cube */
+  body {
+    background: #0a0a0a; /* Terminal black background */
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Cube container */
+  .cube-loader {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg);
+    animation: animate 6s linear infinite;
+  }
+
+  /* Rotation animation - spins opposite direction */
+  @keyframes animate {
+    0% {
+      transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100% {
+      transform: rotateX(-30deg) rotateY(-360deg);
+    }
+  }
+
+  /* Wrapper holds all cube faces */
+  .cube-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+
+  /* Each cube face styled as a terminal window */
+  .cube-span {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    padding: 15px;
+    box-sizing: border-box;
+    background: #0a0a0a; /* black background */
+    color: #33ff33; /* bright terminal green text */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: pre-wrap; /* preserve line breaks */
+    border: 1px solid #33ff33; /* green border */
+    box-shadow: 0 0 15px #33ff33; /* green glow */
+    user-select: none;
+    backface-visibility: hidden;
+    transform: rotateY(calc(90deg * var(--i))) translateZ(75px);
+  }
+
+  /* The top face - black with green glow */
+  .cube-top {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: #0a0a0a;
+    border: 1px solid #33ff33;
+    box-shadow: 0 0 20px #33ff33;
+    transform: rotateX(90deg) translateZ(75px);
+    transform-style: preserve-3d;
+  }
+</style>
+</head>
+<body>
+  <div class="cube-loader">
+    <div class="cube-wrapper">
+      <span class="cube-span" style="--i:0;">
+$ whoami
+developer
+$ ls projects/
+retro-pi/
+home-lab/
+web-apps/
+      </span>
+      <span class="cube-span" style="--i:1;">
+$ echo "Hello World!"
+Hello World!
+      </span>
+      <span class="cube-span" style="--i:2;">
+$ date
+Sat Oct 25 14:30:00 2025
+      </span>
+      <span class="cube-span" style="--i:3;">
+$ uname -a
+Linux terminal-cube 5.15.0
+      </span>
+    </div>
+    <div class="cube-top"></div>
+  </div>
+</body>
+</html>
+

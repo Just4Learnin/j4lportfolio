@@ -1172,8 +1172,8 @@ Linux terminal-cube 5.15.0
                 <h2 class="section-title collapsible-header">Development Log</h2>
                 <div class="section-collapsible-content">
                     <div class="view-toggle">
-                        <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">?</button>
-                        <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">?</button>
+                        <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">☰</button>
+                        <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">⇄</button>
                     </div>
                     <div id="logContainer">
                         <div class="log-entries" id="logEntries"></div>
@@ -1544,7 +1544,7 @@ Linux terminal-cube 5.15.0
                             ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
                         </div>
                         <div class="project-links">
-                            ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} ?</a>`).join('')}
+                            ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} →</a>`).join('')}
                         </div>
                     </div>
                 `).join('');

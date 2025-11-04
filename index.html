@@ -998,7 +998,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  /* visual “border” without altering geometry */
+  /* visual ?border? without altering geometry */
   background: #0a0a0a;
   box-shadow: inset 0 0 0 1px #33ff33, 0 0 15px #33ff33;
   color: #33ff33;
@@ -1048,12 +1048,12 @@
 </head>
 <body>
     <div class="admin-bar" id="adminBar">
-        🔒 Admin Mode Active
+        ?? Admin Mode Active
         <button onclick="saveChanges()">Save All Changes</button>
         <button onclick="exitAdmin()">Exit Admin</button>
     </div>
 
-    <button class="admin-toggle" onclick="toggleAdmin()" style="display: none;">🔧</button>
+    <button class="admin-toggle" onclick="toggleAdmin()" style="display: none;">??</button>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
@@ -1172,8 +1172,8 @@ Linux terminal-cube 5.15.0
                 <h2 class="section-title collapsible-header">Development Log</h2>
                 <div class="section-collapsible-content">
                     <div class="view-toggle">
-                        <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">☰</button>
-                        <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">⇄</button>
+                        <button class="toggle-btn active" data-view="list" data-tooltip="List View" onclick="toggleLogView('list')">?</button>
+                        <button class="toggle-btn" data-view="carousel" data-tooltip="Carousel View" onclick="toggleLogView('carousel')">?</button>
                     </div>
                     <div id="logContainer">
                         <div class="log-entries" id="logEntries"></div>
@@ -1193,7 +1193,7 @@ Linux terminal-cube 5.15.0
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <p style="color: var(--text-secondary);">© 2025 LifeMediaServices - Work in Progress</p>
+                    <p style="color: var(--text-secondary);">? 2025 LifeMediaServices - Work in Progress</p>
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/Just4Learnin" class="social-link" title="GitHub">GitHub</a>
@@ -1236,6 +1236,39 @@ Linux terminal-cube 5.15.0
         let projects = [
             {
                 id: 1,
+                title: "📖 Bible Audio App",
+                description: "A web application that loops through the Holy Bible in audio format. This project provides an accessible way to listen to scripture with continuous playback functionality.",
+                tech: ["JavaScript", "HTML5", "CSS3", "Web Audio API", "Audio Processing"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "GitHub", url: "https://just4learnin.github.io/Bible-audio-project/" }
+                ],
+                image: ""
+            },
+            {
+                id: 2,
+                title: "☕ OnlyBeanz App",
+                description: "A custom application project focused on creating an engaging user experience. Built with modern web technologies and designed for scalability and performance.",
+                tech: ["JavaScript", "HTML5", "CSS3", "Web Development"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "GitHub", url: "https://github.com/Just4Learnin/onlybeanz" }
+                ],
+                image: ""
+            },
+            {
+                id: 3,
+                title: "🤖 LoraAssistant Project",
+                description: "An AI-powered assistant project leveraging LoRA (Low-Rank Adaptation) techniques. This project demonstrates advanced AI/ML concepts with practical applications for intelligent assistance.",
+                tech: ["Python", "AI/ML", "LLM", "LoRA", "Machine Learning"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "GitHub", url: "https://github.com/Just4Learnin/loraassisant" }
+                ],
+                image: ""
+            },
+            {
+                id: 4,
                 title: "🕹️ Retro Pi Gaming System",
                 description: "Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games from multiple console generations with wireless controllers.",
                 tech: ["Raspberry Pi", "RetroPie", "Linux", "3D Printing", "Electronics"],
@@ -1246,7 +1279,7 @@ Linux terminal-cube 5.15.0
                 image: ""
             },
             {
-                id: 2,
+                id: 5,
                 title: "🏠 Home Lab",
                 description: "Coming soon.",
                 tech: ["Proxmox", "Docker", "Kubernetes", "pfSense", "Grafana"],
@@ -1257,18 +1290,18 @@ Linux terminal-cube 5.15.0
                 image: ""
             },
             {
-                id: 3,
+                id: 6,
                 title: "⚡ Koromi Themed Media Player",
                 description: "Created a custom media player with Koromi elements. Currently it streams and plays mp3 files locally. Still working out some kinks though. Download is below.",
                 tech: ["ESP32", "Arduino", "MQTT", "Node.js", "React", "RaspberryPi"],
                 links: [
                     { text: "View Details", url: "#" },
-                    { text: "GitHub", url: "#" }
+                    { text: "GitHub", url: "https://just4learnin.github.io/kuromi-music-player/" }
                 ],
                 image: ""
             },
             {
-                id: 4,
+                id: 7,
                 title: "📊 Network Monitoring Dashboard",
                 description: "Developed a comprehensive network monitoring solution with real-time analytics, alerting system, and beautiful visualizations. Tracks performance across multiple locations and devices.",
                 tech: ["Python", "Flask", "InfluxDB", "Grafana", "Docker"],
@@ -1511,7 +1544,7 @@ Linux terminal-cube 5.15.0
                             ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
                         </div>
                         <div class="project-links">
-                            ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} →</a>`).join('')}
+                            ${p.links.map(l => `<a href="${l.url}" class="project-link">${l.text} ?</a>`).join('')}
                         </div>
                     </div>
                 `).join('');
@@ -2095,7 +2128,7 @@ Linux terminal-cube 5.15.0
                 };
                 
                 console.log('Data to save:', data);
-                alert('⚠️ LOCAL SAVE ONLY\n\nYour changes are saved in your browser, but will be lost when you refresh.\n\nTo persist changes permanently, you need to:\n1. Set up a backend (Node.js/Express)\n2. Use a database (MongoDB, PostgreSQL)\n3. Deploy to Netlify/Vercel with serverless functions\n\nWould you like help setting this up?');
+                alert('?? LOCAL SAVE ONLY\n\nYour changes are saved in your browser, but will be lost when you refresh.\n\nTo persist changes permanently, you need to:\n1. Set up a backend (Node.js/Express)\n2. Use a database (MongoDB, PostgreSQL)\n3. Deploy to Netlify/Vercel with serverless functions\n\nWould you like help setting this up?');
             } catch (err) {
                 console.error('Error in saveChanges:', err);
                 alert('Failed to save changes. Please try again.');

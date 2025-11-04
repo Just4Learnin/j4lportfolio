@@ -686,6 +686,18 @@
             margin-bottom: 0;
         }
 
+        #skills {
+            background: var(--bg-secondary);
+        }
+
+        #skills:has(.section-collapsible-content:not(.active)) {
+            padding: 2rem 0;
+        }
+
+        #skills:has(.section-collapsible-content:not(.active)) .section-title {
+            margin-bottom: 0;
+        }
+
         .view-toggle {
             display: flex;
             justify-content: center;
@@ -1143,23 +1155,13 @@ Linux terminal-cube 5.15.0
             </div>
         </section>
 
-        <section id="skills" class="dev-log">
-            <div class="container">
-                <h2 class="section-title collapsible-header">Skills</h2>
-                <div class="section-collapsible-content">
-                    <div class="skills-grid" id="skillsGrid"></div>
-                    <button class="btn add-new-btn" onclick="addNewSkillCategory()">+ Add New Skill Category</button>
-                </div>
-            </div>
-        </section>
-
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title collapsible-header">Featured Projects</h2>
                 <div class="section-collapsible-content">
                     <div class="carousel-wrapper" id="projectsCarouselWrapper">
-                        <button class="carousel-nav prev" onclick="nextSlide('projects', -1)">&lt;</button>
-                        <button class="carousel-nav next" onclick="nextSlide('projects', 1)">&gt;</button>
+                        <button class="carousel-nav prev" onclick="nextSlide('projects', -1)">?</button>
+                        <button class="carousel-nav next" onclick="nextSlide('projects', 1)">?</button>
                         <div class="carousel projects-carousel" id="projectsCarousel"></div>
                     </div>
                     <button class="btn add-new-btn" onclick="addNewProject()" style="margin-top: 2rem;">+ Add New Project</button>
@@ -1178,12 +1180,22 @@ Linux terminal-cube 5.15.0
                     <div id="logContainer">
                         <div class="log-entries" id="logEntries"></div>
                         <div class="log-carousel-wrapper" id="logCarouselWrapper">
-                            <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">&lt;</button>
-                            <button class="carousel-nav next" onclick="nextSlide('logs', 1)">&gt;</button>
+                            <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">?</button>
+                            <button class="carousel-nav next" onclick="nextSlide('logs', 1)">?</button>
                             <div class="carousel log-carousel" id="logCarousel"></div>
                         </div>
                     </div>
                     <button class="btn add-new-btn" onclick="addNewLog()">+ Add New Log Entry</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="dev-log">
+            <div class="container">
+                <h2 class="section-title collapsible-header">Skills</h2>
+                <div class="section-collapsible-content">
+                    <div class="skills-grid" id="skillsGrid"></div>
+                    <button class="btn add-new-btn" onclick="addNewSkillCategory()">+ Add New Skill Category</button>
                 </div>
             </div>
         </section>
@@ -1236,40 +1248,40 @@ Linux terminal-cube 5.15.0
         let projects = [
             {
                 id: 1,
-                title: "📖 Bible Audio App",
+                title: "\u{1F4D6} Bible Audio App",
                 description: "A web application that loops through the Holy Bible in audio format. This project provides an accessible way to listen to scripture with continuous playback functionality.",
                 tech: ["JavaScript", "HTML5", "CSS3", "Web Audio API", "Audio Processing"],
                 links: [
                     { text: "View Details", url: "https://github.com/Just4Learnin/Bible-audio-project" },
-                    { text: "GitHub", url: "https://just4learnin.github.io/Bible-audio-project/" }
+                    { text: "Live Demo", url: "https://just4learnin.github.io/Bible-audio-project/" }
                 ],
                 image: ""
             },
             {
                 id: 2,
-                title: "⚡ Koromi Themed Media Player",
+                title: "\u{26A1} Koromi Themed Media Player",
                 description: "Created a custom media player with Koromi elements. Currently it streams and plays mp3 files locally. Still working out some kinks though. Download is below.",
                 tech: ["ESP32", "Arduino", "MQTT", "Node.js", "React", "RaspberryPi"],
                 links: [
                     { text: "View Details", url: "https://github.com/Just4Learnin/kuromi-music-player" },
-                    { text: "GitHub", url: "https://just4learnin.github.io/kuromi-music-player/" }
+                    { text: "Live Demo", url: "https://just4learnin.github.io/kuromi-music-player/" }
                 ],
                 image: ""
             },
             {
                 id: 3,
-                title: "🤖 LoraAssistant Project",
-                description: "An AI-powered assistant project leveraging LoRA (Low-Rank Adaptation) techniques. This project demonstrates advanced AI/ML concepts with practical applications for intelligent assistance.",
-                tech: ["Python", "AI/ML", "LLM", "LoRA", "Machine Learning"],
+                title: "\u{1F916} LoraAssistant Project",
+                description: "An AI-powered assistant project creating an AI based after Lora Croft. This project demonstrates advanced AI/ML concepts with practical applications for intelligent assistance. it will be added to GitHub once i am happy with it",
+                tech: ["Python", "AI/ML", "LLM", "Machine Learning"],
                 links: [
-                    { text: "View Details", url: "#" },
-                    { text: "GitHub", url: "https://github.com/Just4Learnin/loraassisant" }
+                    { text: "Coming Soon", url: "#" },
+                    { text: "Coming Soon", url: "#" }
                 ],
                 image: ""
             },
             {
                 id: 4,
-                title: "☕ OnlyBeanz App",
+                title: "\u{2615} OnlyBeanz App",
                 description: "A custom application project focused on creating an engaging user experience. Built with modern web technologies and designed for scalability and performance.",
                 tech: ["JavaScript", "HTML5", "CSS3", "Web Development"],
                 links: [
@@ -1280,31 +1292,42 @@ Linux terminal-cube 5.15.0
             },
             {
                 id: 5,
-               title: "🕹️ Retro Pi Gaming System",
+               title: "\u{1F3AE} Retro Pi Gaming System",
                 description: "Built a custom retro gaming console using Raspberry Pi 4, featuring over 1000 classic games from multiple console generations with wireless controllers.",
                 tech: ["Raspberry Pi", "RetroPie", "Linux", "3D Printing", "Electronics"],
                 links: [
-                    { text: "View Details", url: "#" },
-                    { text: "GitHub", url: "https://github.com/Just4Learnin" }
+                    { text: "View Details", url: "https://retropie.org.uk/docs/First-Installation/" },
+                    { text: "View Details", url: "https://retropie.org.uk/docs/First-Installation/" }
                 ],
                 image: ""
             },
             {
                 id: 6,
-               itle: "🏠 Home Lab",
+               title: "\u{1F3E0} Home Lab",
                 description: "Coming soon.",
                 tech: ["Proxmox", "Docker", "Kubernetes", "pfSense", "Grafana"],
                 links: [
                     { text: "View Details", url: "#" },
-                    { text: "Documentation", url: "#" }
+                    { text: "Documentation", url: "https://www.youtube.com/watch?v=xvFZjo5PgG0" }
                 ],
                 image: ""
             },
             {
                 id: 7,
-                title: "📊 Network Monitoring Dashboard",
-                description: "Developed a comprehensive network monitoring solution with real-time analytics, alerting system, and beautiful visualizations. Tracks performance across multiple locations and devices.",
+                title: "\u{1F4CA} Network Monitoring Dashboard",
+                description: "coming soon.",
                 tech: ["Python", "Flask", "InfluxDB", "Grafana", "Docker"],
+                links: [
+                    { text: "View Details", url: "#" },
+                    { text: "Live Demo", url: "https://www.youtube.com/watch?v=xvFZjo5PgG0" }
+                ],
+                image: ""
+            },
+            {
+                id: 8,
+                title: "\u{1F4B0} Personal Finance Application",
+                description: "coming soon.",
+                tech: ["#"],
                 links: [
                     { text: "View Details", url: "#" },
                     { text: "Live Demo", url: "https://www.youtube.com/watch?v=xvFZjo5PgG0" }
@@ -1632,8 +1655,8 @@ Linux terminal-cube 5.15.0
                 } else {
                     container.innerHTML = `
                         <div class="log-carousel-wrapper active" id="logCarouselWrapper">
-                            <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">&lt;</button>
-                            <button class="carousel-nav next" onclick="nextSlide('logs', 1)">&gt;</button>
+                            <button class="carousel-nav prev" onclick="nextSlide('logs', -1)">←</button>
+                            <button class="carousel-nav next" onclick="nextSlide('logs', 1)">→</button>
                             <div class="carousel log-carousel" id="logCarousel"></div>
                         </div>
                     `;
@@ -2128,7 +2151,7 @@ Linux terminal-cube 5.15.0
                 };
                 
                 console.log('Data to save:', data);
-                alert('?? LOCAL SAVE ONLY\n\nYour changes are saved in your browser, but will be lost when you refresh.\n\nTo persist changes permanently, you need to:\n1. Set up a backend (Node.js/Express)\n2. Use a database (MongoDB, PostgreSQL)\n3. Deploy to Netlify/Vercel with serverless functions\n\nWould you like help setting this up?');
+                alert('\u{1F4BE} LOCAL SAVE ONLY\n\nYour changes are saved in your browser, but will be lost when you refresh.\n\nTo persist changes permanently, you need to:\n1. Set up a backend (Node.js/Express)\n2. Use a database (MongoDB, PostgreSQL)\n3. Deploy to Netlify/Vercel with serverless functions\n\nWould you like help setting this up?');
             } catch (err) {
                 console.error('Error in saveChanges:', err);
                 alert('Failed to save changes. Please try again.');

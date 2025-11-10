@@ -1065,11 +1065,15 @@
         <button onclick="exitAdmin()">Exit Admin</button>
     </div>
 
-    <button class="admin-toggle" onclick="toggleAdmin()" style="display: none;">??</button>
+    <button class="admin-toggle" onclick="toggleAdmin()">⚙️</button>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <h2>Admin Login</h2>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="adminEmail" placeholder="Enter admin email" value="admin@example.com">
+            </div>
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" id="adminPassword" placeholder="Enter admin password">
@@ -1217,20 +1221,9 @@ Linux terminal-cube 5.15.0
         </div>
     </footer>
 
+    <script type="module" src="admin.js"></script>
     <script>
-        const AUTH_KEY = 'c906aa20dbf0dcd3a19efb1f5abc50091a9fe71a953baa53a6cd238918137342';
-
-        async function hashPassword(password) {
-            try {
-                const msgBuffer = new TextEncoder().encode(password);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            } catch (err) {
-                console.error('Error hashing password:', err);
-                return '';
-            }
-        }
+        // Firebase authentication is now handled in admin.js
 
         document.addEventListener('keydown', function(event) {
             if (event.ctrlKey && event.key === 'l') {
@@ -1714,58 +1707,9 @@ Linux terminal-cube 5.15.0
             }
         }
 
-        async function login() {
-            try {
-                const passwordInput = document.getElementById('adminPassword');
-                if (!passwordInput) {
-                    console.warn('Admin password input not found');
-                    return;
-                }
-                const password = passwordInput.value;
-                const hashedInput = await hashPassword(password);
-                
-                if (hashedInput === AUTH_KEY) {
-                    isAdmin = true;
-                    document.body.classList.add('edit-mode');
-                    const adminBar = document.getElementById('adminBar');
-                    if (adminBar) adminBar.classList.add('active');
-                    closeModal();
-                    renderProjects();
-                    renderSkills();
-                    renderLogs();
-                    alert('Admin mode activated! You can now edit content.');
-                } else {
-                    alert('Incorrect password!');
-                }
-            } catch (err) {
-                console.error('Error in login:', err);
-                alert('Login failed. Please try again.');
-            }
-        }
+        // Login function is now handled in admin.js with Firebase Authentication
 
-        function exitAdmin() {
-            try {
-                isAdmin = false;
-                document.body.classList.remove('edit-mode');
-                const adminBar = document.getElementById('adminBar');
-                if (adminBar) adminBar.classList.remove('active');
-                renderProjects();
-                renderSkills();
-                renderLogs();
-            } catch (err) {
-                console.error('Error in exitAdmin:', err);
-            }
-        }
-
-        function closeModal() {
-            try {
-                document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-                const adminPassword = document.getElementById('adminPassword');
-                if (adminPassword) adminPassword.value = '';
-            } catch (err) {
-                console.error('Error in closeModal:', err);
-            }
-        }
+        // Admin functions are now handled in admin.js with Firebase Authentication
 
         // SKILLS EDITING FUNCTIONS
         function editSkillCategory(id) {

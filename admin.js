@@ -532,6 +532,15 @@ function editProject(id) {
                 <label>Image URL</label>
                 <input type="text" id="editImage" value="${project.image || ''}">
             </div>
+            <div class="form-group">
+                <label>Project Links</label>
+                ${project.links.map((link, index) => `
+                    <div style="margin-bottom: 10px; padding: 10px; border: 1px solid #333; border-radius: 5px;">
+                        <input type="text" id="editLinkText${index}" value="${link.text}" placeholder="Link Text" style="margin-bottom: 5px; width: 100%;">
+                        <input type="text" id="editLinkUrl${index}" value="${link.url}" placeholder="Link URL" style="width: 100%;">
+                    </div>
+                `).join('')}
+            </div>
         `;
         
         const editModal = document.getElementById('editModal');
@@ -801,6 +810,16 @@ async function saveEdit() {
             project.description = editDescription.value;
             project.tech = editTech.value.split(',').map(t => t.trim());
             project.image = editImage.value;
+            
+            // Update links
+            project.links = project.links.map((link, index) => {
+                const textElement = document.getElementById(`editLinkText${index}`);
+                const urlElement = document.getElementById(`editLinkUrl${index}`);
+                return {
+                    text: textElement ? textElement.value : link.text,
+                    url: urlElement ? urlElement.value : link.url
+                };
+            });
             
             // Update in Firebase
             await updateDoc(doc(db, "projects", currentEditId.toString()), project);
